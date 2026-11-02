@@ -67,6 +67,10 @@ func hop(_ body: @escaping @MainActor () -> Void) {
     nonisolated package static let targetKey = "buildTarget"
     nonisolated package static let bcOnCPUKey = "bcOnCPU"
 
+    @Published package var dumpMode = false
+    @Published package var dumpFolder = ""
+    @Published package var dumpProblem = ""
+    @Published package var dumpLayout: ExtractedGame.Layout?
     @Published package var gameDir = ""
     @Published package var slots: [Slot] = [
         Slot(id: "base", kind: .base, title: "data.base", optional: false),
@@ -203,7 +207,7 @@ func hop(_ body: @escaping @MainActor () -> Void) {
     }
 
     /// A build may start: the repository is usable, the base game and the keys are there, the tools are all present and none runs.
-    package var canBuild: Bool { repo.isRepo && slot("base").ok && slot("keys").ok && deps.allPresent && !running }
+    package var canBuild: Bool { repo.isRepo && inputsReady && deps.allPresent && !running }
 
     /// A line for the build card's note, from a store that has no card of its own (the dependency store's failed install).
     package func note(_ text: String) { doneNote = text }

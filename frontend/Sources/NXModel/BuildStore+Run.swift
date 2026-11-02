@@ -7,6 +7,10 @@ import NXCore
 extension BuildStore {
     package func startBuild() {
         guard !running else { return }
+        if dumpMode {
+            guard target == BuildTarget.mac else { done = false; doneNote = t("dump.macOnly"); return }
+            guard validateDump() else { done = false; doneNote = dumpProblem; return }
+        }
         // The shared app needs a device this Mac knows. Found out here, before an hour of building, not after it.
         if target != BuildTarget.mac, !shellDeviceChecked {
             guard installsDirectly else { doneNote = t("shell.needsDevice"); done = false; return }
@@ -45,57 +49,16 @@ extension BuildStore {
             return
         }
 
-        // One folder when everything lives together; otherwise a staging folder of symlinks. A folder
-        // that holds other games too (a ROMs folder with one file per game) is staged as well: the
-        // script takes one game per folder and refuses one with several ("more than one game in the
-        // folder"), even when only the base game was picked (issue #58; ufooer's PR #31).
-        let baseDir = (basePath as NSString).deletingLastPathComponent
-        let allPaths = [basePath, updatePath] + dlcPaths
-        let dirs = Set(allPaths.filter { !$0.isEmpty }.map { ($0 as NSString).deletingLastPathComponent })
-        let picked = Set(allPaths.filter { !$0.isEmpty }.map { ($0 as NSString).lastPathComponent })
-        let unpicked = ((try? FileManager.default.contentsOfDirectory(atPath: baseDir)) ?? []).filter {
-            ["nsp", "xci", "nsz", "xcz"].contains(($0 as NSString).pathExtension.lowercased()) && !picked.contains($0)
-        }
-        // Staged, the folder's own update and add-on content would be left behind, where the script
-        // used to find them unpicked: bring along those whose file name carries this game's title ID
-        // exactly as build_ipa_from_nsp.py:445 reads it: the low 12 bits are 0x000 for a base game,
-        // 0x800 for its update, and anything else is add-on content below the base.
-        var staged = allPaths
-        if let base = TitleID.parse((basePath as NSString).lastPathComponent) {
-            let app = base & ~0xFFF
-            for f in unpicked {
-                guard let tid = TitleID.parse(f) else { continue }
-                let low = tid & 0xFFF
-                let owner = low == 0 ? tid : (low == 0x800 ? tid & ~0xFFF : (tid & ~0xFFF) - 0x1000)
-                guard owner == app else { continue }
-                if low == 0x800 && !updatePath.isEmpty { continue }   // the update was picked already
-                if low != 0 && low != 0x800 && tid <= app { continue }   // add-on content sits above its base
-                staged.append(baseDir + "/" + f)
+        if dumpMode {
+            let engineRoot = EngineLayout.root(repo.path)
+            guard ExtractedGame.supportsEngine(engineRoot) else { fail(t("dump.engineOld")); return }
+            guard let layout = dumpLayout,
+                  FileManager.default.fileExists(atPath: engineRoot + "/dm/games/" + layout.titleID + "/game.tsv") else {
+                fail(String(format: t("dump.noProfile"), dumpLayout?.titleID ?? "")); return
             }
         }
-        let tidHex = TitleID.buildKey(basePath)
-        let workDir = (outDir.isEmpty ? baseDir : outDir) + "/" + tidHex + "_build"
-        // The build's signing step refuses the attributes a cloud folder adds, after the long steps: stop here instead.
-        if cloudFolderCheck(workDir) {
-            failure = BuildFailure(kind: .cloudFolder, gameName: nil, detail: workDir)
-            fail(failureWhat(failure!))
-            return
-        }
-        // The shared app's own folder is decided before the long steps too: one on a read-only volume (a saved
-        // /NX2Apple-shell, a DMG chosen as Save to) failed at the last step after the whole build (#492).
-        if target != BuildTarget.mac, let why = shellRootProblem() { fail(why); return }
-        var inputDir = baseDir
-        if dirs.count > 1 || !unpicked.isEmpty {
-            // A stable folder per game (#132): the script's fingerprints name its files and its profile path.
-            let tmp = InputStaging.folder(workDir: workDir)
-            let linked = InputStaging.sync(files: staged, into: tmp)
-            if linked == 0 { fail(t("msg.stagingFailed")); return }
-            staging = tmp; inputDir = tmp
-            if !unpicked.isEmpty {
-                say(String(format: t("msg.stagedFromSharedFolder"), (basePath as NSString).lastPathComponent))
-            }
-        } else { staging = nil }
-
+        guard let plan = inputPlan() else { return }
+        let (baseDir, inputDir, tidHex, workDir) = plan
         // This fork's --work-dir keeps the build folder (extracted files, shader cache, the romfs
         // archive) outside the NSPs' folder. An upstream checkout or an older ZIP does not have the
         // option and would stop with "unrecognized arguments" (issue #5), so ask the script; without
@@ -108,7 +71,7 @@ extension BuildStore {
         // A compressed dump (NSZ / XCZ) needs nsz in the interpreter the build runs under; it is not
         // part of the dependency probe (most builds never see one), so install it here, once, only
         // when such a file is actually selected — otherwise the build stops with "pip install nsz".
-        let compressed = ([basePath, updatePath] + dlcPaths).contains {
+        let compressed = !dumpMode && ([basePath, updatePath] + dlcPaths).contains {
             let e = ($0 as NSString).pathExtension.lowercased()
             return e == "nsz" || e == "xcz"
         }
@@ -125,8 +88,8 @@ extension BuildStore {
             }
         }
         let engine = EngineLayout.root(repo.path)   // the checkout's engine/ (#214)
-        var args = [engine + "/" + RepoLayout.buildScript, inputDir, "-k", keysPath,
-                    "--progress", "json"]
+        var args = [engine + "/" + RepoLayout.buildScript, inputDir, "--progress", "json"]
+        if !dumpMode { args += ["-k", keysPath] }
         // A compatibility switch the player turned on: written to a small env file the pipeline
         // copies into the app bundle (main.m sets one variable per line at boot). Only for an iPhone or iPad build;
         // a Mac app runs on this Mac's GPU, which always has BC support.

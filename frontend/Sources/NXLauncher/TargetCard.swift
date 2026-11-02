@@ -59,7 +59,7 @@ package struct TargetCard: View {
             .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(selected ? LauncherPalette.cream.opacity(0.7) : Color.white.opacity(0.06), lineWidth: selected ? 1.5 : 1))
             .contentShape(RoundedRectangle(cornerRadius: 14))
         }
-        .buttonStyle(.plain).disabled(build.running)
+        .buttonStyle(.plain).disabled(build.running || (build.dumpMode && value != BuildTarget.mac))
         .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }

@@ -23,7 +23,7 @@ extension BuildStore {
 
     /// What the classifier may check besides the log: the keys file and where the game files are.
     package func failureInputs() -> BuildFailureClassifier.Inputs {
-        BuildFailureClassifier.Inputs(keysPath: keysPath, paths: ([basePath, updatePath, gameDir] + dlcPaths).filter { !$0.isEmpty },
+        BuildFailureClassifier.Inputs(keysPath: dumpMode ? "" : keysPath, paths: (dumpMode ? [dumpFolder] : [basePath, updatePath, gameDir] + dlcPaths).filter { !$0.isEmpty },
                                       volumes: volumesRoot)
     }
 
@@ -99,10 +99,10 @@ extension BuildStore {
     /// disk the build folder (`<title ID>_build`, beside the game files) when it is there, since that is where the space went.
     package func showFailureFolder() {
         guard let f = failure else { return }
-        var folder = gameDir.isEmpty ? (f.detail ?? "") : gameDir
-        if f.kind == .diskFull, !gameDir.isEmpty {
-            let built = ((try? FileManager.default.contentsOfDirectory(atPath: gameDir)) ?? []).sorted().first { $0.hasSuffix("_build") }
-            if let built { folder = gameDir + "/" + built }
+        var folder = inputFolder.isEmpty ? (f.detail ?? "") : inputFolder
+        if f.kind == .diskFull, !inputFolder.isEmpty {
+            let built = ((try? FileManager.default.contentsOfDirectory(atPath: inputFolder)) ?? []).sorted().first { $0.hasSuffix("_build") }
+            if let built { folder = inputFolder + "/" + built }
         }
         guard !folder.isEmpty else { return }
         revealFolder(URL(fileURLWithPath: folder))

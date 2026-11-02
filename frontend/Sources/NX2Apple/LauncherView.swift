@@ -756,7 +756,7 @@ struct LauncherView: View {
     private func newBuild() {
         guard !m.running else { page = .builds; return }
         for index in m.slots.indices { m.slots[index].paths = []; m.slots[index].problem = "" }
-        m.gameDir = ""; m.done = false; m.doneNote = ""; m.macAppPath = ""; m.stages = []
+        m.resetExtractedInputs(); m.gameDir = ""; m.done = false; m.doneNote = ""; m.macAppPath = ""; m.stages = []
         if m.outDir.isEmpty && !library.folder.isEmpty { m.outDir = library.folder }
         page = .builds
     }
@@ -772,7 +772,7 @@ struct LauncherView: View {
         m.gameDir = game.sourceFolder.isEmpty ? (m.basePath as NSString).deletingLastPathComponent : game.sourceFolder
         m.outDir = game.outputDirectory
         m.done = false; m.doneNote = ""; m.stages = []
-        m.target = game.lastTarget
+        m.target = game.lastTarget; m.restoreExtractedInputs(game.inputs["dump"]?.first)
         page = .builds
     }
 

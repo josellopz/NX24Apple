@@ -67,6 +67,14 @@ first build starts, and **Settings → App** turns it off. Notifications need th
 app bundle: started with `swift run` the launcher has no bundle identifier, and
 there are none.
 
+## Experimental Switch 2 folders
+
+On the build page, **Game source → Switch 2 · extracted folders (experimental)**
+accepts an already extracted root with `base/exefs` and `base/romfs`. This mode
+builds **This Mac** only and needs no `prod.keys`. The selected engine must have
+an existing game profile. See [the experiment's requirements and limitations](../SWITCH2-EXPERIMENT.md)
+for the full layout, updates, DLC, validation and test scope.
+
 ## iPhone and iPad
 
 The **iPhone / iPad** target is one app on the device that holds every game you add. It needs
