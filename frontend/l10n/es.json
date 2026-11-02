@@ -1085,7 +1085,7 @@
   "section.tools": "Herramientas de compilación",
   "settings.heading": "Ajustes",
   "settings.language": "Idioma",
-  "settings.language.system": "Usar el del sistema",
+  "settings.language.system": "Usar sistema",
   "settings.note": "Ubicación de la biblioteca, herramientas y actualizaciones.",
   "settings.notify": "Notificar al terminar una compilación",
   "settings.notifyNote": "Cuando una compilación termine o falle con NX24Apple en segundo plano",

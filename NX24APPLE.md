@@ -10,7 +10,7 @@ Engine subprocess output and game code are not translated. Changing the interfac
 
 ## Branding and compatibility
 
-The window, header, app settings row and bundle display name use NX24Apple. The Swift targets, executable name, bundle identifier and Application Support paths retain their original values to keep the installed library, preferences and saves accessible. The launcher still credits nxnative. App release checks point to `josellopz/NX2Apple`.
+The window, header, app settings row and bundle display name use NX24Apple. The Swift targets, executable name, bundle identifier and Application Support paths retain their original values to keep the installed library, preferences and saves accessible. The launcher still credits nxnative. App release checks point to `josellopz/NX24Apple`.
 
 ## Local package
 
