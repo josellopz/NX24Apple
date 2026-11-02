@@ -40,7 +40,7 @@ struct FilesCard: View {
                 CardRow(loc.t("dump.experimental"), detail: loc.t("dump.hint")) { EmptyView() }
                 if let layout = build.dumpLayout {
                     CardDivider()
-                    CardRow(layout.titleID, detail: layout.versions.isEmpty ? loc.t("dump.baseOnly") : String(format: loc.t("dump.versions"), layout.versions.map(String.init).joined(separator: ", "))) { EmptyView() }
+                    CardRow(layout.titleID, detail: layout.versions.isEmpty ? loc.t("dump.baseOnly") : String(format: loc.t(layout.hasBaseRomfs ? "dump.versions" : "dump.updateOnlyVersions"), layout.versions.map(String.init).joined(separator: ", "))) { EmptyView() }
                 }
                 if !build.dumpProblem.isEmpty {
                     Text(build.dumpProblem).font(.manrope(13)).foregroundStyle(LauncherPalette.building)

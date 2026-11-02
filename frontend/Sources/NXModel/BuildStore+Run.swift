@@ -51,7 +51,7 @@ extension BuildStore {
 
         if dumpMode {
             let engineRoot = EngineLayout.root(repo.path)
-            guard ExtractedGame.supportsEngine(engineRoot) else { fail(t("dump.engineOld")); return }
+            guard ExtractedGame.supportsEngine(engineRoot, needsUpdateRomfs: dumpLayout?.hasBaseRomfs == false) else { fail(t("dump.engineOld")); return }
             guard let layout = dumpLayout,
                   FileManager.default.fileExists(atPath: engineRoot + "/dm/games/" + layout.titleID + "/game.tsv") else {
                 fail(String(format: t("dump.noProfile"), dumpLayout?.titleID ?? "")); return

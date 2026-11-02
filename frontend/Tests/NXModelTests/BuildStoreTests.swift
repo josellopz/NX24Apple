@@ -115,6 +115,37 @@ import XCTest
         XCTAssertNil(store.staging)
     }
 
+    func testUpdateOnlyRomfsPreparesTheOriginalRootAndRequiresCompatibleEngine() throws {
+        let folder = try extracted()
+        let update = URL(fileURLWithPath: folder + "/updates/655360")
+        try FileManager.default.createDirectory(at: update.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try FileManager.default.copyItem(atPath: folder + "/base", toPath: update.path)
+        try FileManager.default.removeItem(atPath: folder + "/base/romfs")
+        let store = makeStore()
+        store.selectDump(update.appendingPathComponent("romfs").path)
+        store.outDir = temporary.path + "/output"
+        store.cloudFolderCheck = { _ in false }
+        XCTAssertTrue(store.canBuild)
+        XCTAssertEqual(store.dumpFolder, folder)
+        XCTAssertEqual(store.dumpLayout?.versions, [655360])
+        repo.path = temporary.path + "/engine"
+        for name in [RepoLayout.buildScript, RepoLayout.romfsImageTool, "scripts/pack_dump.py", "dm/games/040074A01BF12000/game.tsv"] {
+            let file = URL(fileURLWithPath: repo.path + "/" + name)
+            try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data("scan_dump( '--work-dir'".utf8).write(to: file)
+        }
+        store.startBuild()
+        XCTAssertEqual(store.doneNote, store.t("dump.engineOld"))
+        XCTAssertTrue(store.lastBuildCommand.isEmpty)
+        let script = URL(fileURLWithPath: repo.path + "/" + RepoLayout.buildScript)
+        try Data("scan_dump( def dump_versions( '--work-dir'".utf8).write(to: script)
+        store.startBuild()
+        XCTAssertEqual(store.lastBuildCommand.dropFirst(2).first, folder)
+        XCTAssertFalse(store.lastBuildCommand.contains("-k"))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: folder + "/base/romfs"))
+        XCTAssertNil(store.staging)
+    }
+
     func testAnOldEngineOrMissingProfileStopsWithAnActionableMessage() throws {
         let store = makeStore()
         store.selectDump(try extracted())

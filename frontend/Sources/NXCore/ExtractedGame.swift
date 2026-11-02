@@ -7,6 +7,7 @@ package enum ExtractedGame {
         package var root: String
         package var titleID: String
         package var versions: [UInt64]
+        package var hasBaseRomfs = true
     }
 
     package struct Problem: Error, Equatable {
@@ -16,11 +17,17 @@ package enum ExtractedGame {
     }
 
     package static func root(for selection: String) -> String {
-        let url = URL(fileURLWithPath: selection).standardizedFileURL
-        // Accept the base folder too, while always passing the root (updates and DLC included).
-        if url.lastPathComponent == "base", isDirectory(url.appendingPathComponent("exefs").path) {
-            return url.deletingLastPathComponent().path
+        var url = URL(fileURLWithPath: selection).standardizedFileURL
+        // Known layout children are accepted too. Never search arbitrary parent directories.
+        if ["exefs", "romfs"].contains(url.lastPathComponent),
+           url.deletingLastPathComponent().lastPathComponent == "base" || url.deletingLastPathComponent().deletingLastPathComponent().lastPathComponent == "updates" {
+            url.deleteLastPathComponent()
         }
+        if url.lastPathComponent == "base", isDirectory(url.appendingPathComponent("exefs").path) { return url.deletingLastPathComponent().path }
+        if url.deletingLastPathComponent().lastPathComponent == "updates" {
+            return url.deletingLastPathComponent().deletingLastPathComponent().path
+        }
+        if url.lastPathComponent == "updates" { return url.deletingLastPathComponent().path }
         return url.path
     }
 
@@ -37,7 +44,9 @@ package enum ExtractedGame {
         if let package = names.first(where: {
             !$0.hasPrefix("._") && ["nsp", "xci", "nsz", "xcz"].contains(($0 as NSString).pathExtension.lowercased())
         }) { throw Problem("dump.mixed", package) }
-        let app = try version(root + "/base")
+        _ = try contents(root + "/base/exefs")
+        let hasBaseRomfs = fm.fileExists(atPath: root + "/base/romfs")
+        let app = try version(root + "/base", requireRomfs: hasBaseRomfs)
         guard app != 0, app & 0xFFF == 0 else { throw Problem("dump.baseID", String(format: "%016llX", app)) }
         var versions: [UInt64] = []
         if fm.fileExists(atPath: root + "/updates") {
@@ -51,6 +60,7 @@ package enum ExtractedGame {
                 versions.append(number)
             }
         }
+        guard hasBaseRomfs || !versions.isEmpty else { throw Problem("dump.noRomfs", "") }
         if fm.fileExists(atPath: root + "/dlc") {
             for name in try contents(root + "/dlc") where !name.hasPrefix(".") {
                 guard name.count == 16, let tid = UInt64(name, radix: 16), tid > app,
@@ -63,11 +73,11 @@ package enum ExtractedGame {
                 _ = try contents(roms[0])
             }
         }
-        return Layout(root: root, titleID: String(format: "%016llX", app), versions: versions.sorted())
+        return Layout(root: root, titleID: String(format: "%016llX", app), versions: versions.sorted(), hasBaseRomfs: hasBaseRomfs)
     }
 
-    private static func version(_ path: String) throws -> UInt64 {
-        _ = try contents(path + "/romfs")
+    private static func version(_ path: String, requireRomfs: Bool = true) throws -> UInt64 {
+        if requireRomfs { _ = try contents(path + "/romfs") }
         let main = try header(path + "/exefs/main", count: 0x100)
         guard main.count >= 0x100, Array(main.prefix(4)) == Array("NSO0".utf8) else { throw Problem("dump.nso", path + "/exefs/main") }
         let npdmPath = path + "/exefs/main.npdm"
@@ -105,8 +115,9 @@ package enum ExtractedGame {
         return FileManager.default.fileExists(atPath: path, isDirectory: &directory) && directory.boolValue
     }
 
-    package static func supportsEngine(_ root: String) -> Bool {
+    package static func supportsEngine(_ root: String, needsUpdateRomfs: Bool = false) -> Bool {
         let script = try? String(contentsOfFile: root + "/scripts/build_ipa_from_nsp.py", encoding: .utf8)
         return FileManager.default.fileExists(atPath: root + "/scripts/pack_dump.py") && script?.contains("scan_dump(") == true
+            && (!needsUpdateRomfs || script?.contains("def dump_versions(") == true)
     }
 }

@@ -70,7 +70,7 @@ there are none.
 ## Experimental Switch 2 folders
 
 On the build page, **Game source → Switch 2 · extracted folders (experimental)**
-accepts an already extracted root with `base/exefs` and `base/romfs`. This mode
+accepts an already extracted root with `base/exefs` and RomFS in the base or a complete `updates/<version>` folder. Selecting base or update subfolders also works. This mode
 builds **This Mac** only and needs no `prod.keys`. The selected engine must have
 an existing game profile. See [the experiment's requirements and limitations](../SWITCH2-EXPERIMENT.md)
 for the full layout, updates, DLC, validation and test scope.

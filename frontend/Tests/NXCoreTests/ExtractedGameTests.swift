@@ -35,6 +35,36 @@ final class ExtractedGameTests: XCTestCase {
         XCTAssertEqual(a, try ExtractedGame.inspect(root.appendingPathComponent("base").path))
         XCTAssertEqual(a.versions, [])
     }
+    func testUpdateRomfsWorksWithoutBaseRomfsAndNormalizesChildSelections() throws {
+        try version(); try version("updates/655360"); try version("updates/9")
+        try FileManager.default.removeItem(at: root.appendingPathComponent("base/romfs"))
+        let layout = try ExtractedGame.inspect(root.path)
+        XCTAssertFalse(layout.hasBaseRomfs)
+        XCTAssertEqual(layout.versions, [9, 655360])
+        for child in ["base", "base/exefs", "updates", "updates/655360", "updates/655360/exefs", "updates/655360/romfs"] {
+            XCTAssertEqual(try ExtractedGame.inspect(root.appendingPathComponent(child).path), layout)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: root.path + "/base/romfs"))
+    }
+    func testMissingRomfsEverywhereIsReportedAndIncompleteUpdatesAreNotMixedWithBase() throws {
+        try version()
+        try FileManager.default.removeItem(at: root.appendingPathComponent("base/romfs"))
+        try rejects("dump.noRomfs")
+        try version(); try version("updates/655360")
+        try FileManager.default.removeItem(at: root.appendingPathComponent("updates/655360/romfs"))
+        try rejects("dump.folderMissing")
+    }
+    func testOldEngineNeedsTheUpdateOnlyCapabilityButStillAcceptsStandardDumps() throws {
+        let scripts = root.appendingPathComponent("scripts")
+        try FileManager.default.createDirectory(at: scripts, withIntermediateDirectories: true)
+        try Data().write(to: scripts.appendingPathComponent("pack_dump.py"))
+        let build = scripts.appendingPathComponent("build_ipa_from_nsp.py")
+        try Data("scan_dump(".utf8).write(to: build)
+        XCTAssertTrue(ExtractedGame.supportsEngine(root.path))
+        XCTAssertFalse(ExtractedGame.supportsEngine(root.path, needsUpdateRomfs: true))
+        try Data("scan_dump( def dump_versions(".utf8).write(to: build)
+        XCTAssertTrue(ExtractedGame.supportsEngine(root.path, needsUpdateRomfs: true))
+    }
     func testUpdatesAndDLCUseEngineLayoutAndNumericVersionOrder() throws {
         try version(); try version("updates/9"); try version("updates/10")
         try FileManager.default.createDirectory(at: root.appendingPathComponent("dlc/040074a01bf13001/0/romfs"), withIntermediateDirectories: true)
