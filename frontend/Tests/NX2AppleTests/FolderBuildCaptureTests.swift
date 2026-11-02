@@ -19,7 +19,7 @@ import NXLauncher
             Text(stores.localizer.t("diag.copy"))
         }.padding(24).frame(width: 800).background(LauncherPalette.background)
             .environmentObject(stores.localizer).preferredColorScheme(.dark)
-        let host = NSHostingView(rootView: view)
+        let host = NSHostingView(rootView: view.environmentObject(PadFocus()))
         let window = OffscreenWindow(size: NSSize(width: 800, height: 650), styleMask: [.titled])
         window.contentView = host
         window.orderFront(nil)
