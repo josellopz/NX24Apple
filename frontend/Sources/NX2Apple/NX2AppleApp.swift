@@ -19,7 +19,7 @@ struct NX2AppleApp: App {
     @StateObject private var console = ConsoleCoordinator()
 
     var body: some Scene {
-        WindowGroup("NX2Apple") {
+        WindowGroup("NX24Apple") {
             if let name = ProcessInfo.processInfo.environment["NSPB_ONBOARDING_DEMO"],
                let scenario = MockOnboardingDriver.Scenario(rawValue: name) {
                 OnboardingDemoHost(scenario: scenario)

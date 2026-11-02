@@ -6,6 +6,33 @@ import NXCore
 import NXLauncher
 
 @MainActor final class FolderBuildCaptureTests: XCTestCase {
+    func testRenderIncludedEngineForVisualQA() throws {
+        guard let directory = ProcessInfo.processInfo.environment["NX_LAUNCHER_CAPTURE_DIR"] else { throw XCTSkip("Set NX_LAUNCHER_CAPTURE_DIR") }
+        let stores = LauncherStores()
+        stores.build.lang = CaptureLanguage.current(.en)
+        let engine = EngineSyncStore(localizer: stores.localizer, runner: SystemProcessRunner(), repo: stores.repo,
+            python: stores.dependencies, bundle: URL(fileURLWithPath: "/Volumes/Games/IncludedEngine"), bundledEngineOnly: true)
+        engine.selection = EngineSelection(channel: .stable, engineID: String(repeating: "a", count: 40) + "-0123456789ab",
+                                           version: "1.0.1", previousID: "")
+        let view = ToolsCard(repo: stores.repo, engine: engine, dependencies: stores.dependencies, buildRunning: false,
+                             shellCachePath: "/Volumes/Games/NX2Apple-shell", revealFolder: { _ in }) {
+            Text(stores.localizer.t("diag.copy"))
+        }.padding(24).frame(width: 800).background(LauncherPalette.background)
+            .environmentObject(stores.localizer).preferredColorScheme(.dark)
+        let host = NSHostingView(rootView: view)
+        let window = OffscreenWindow(size: NSSize(width: 800, height: 650), styleMask: [.titled])
+        window.contentView = host
+        window.orderFront(nil)
+        RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+        host.layoutSubtreeIfNeeded()
+        let rep = try XCTUnwrap(host.bitmapImageRepForCachingDisplay(in: host.bounds))
+        host.cacheDisplay(in: host.bounds, to: rep)
+        let out = URL(fileURLWithPath: directory)
+        try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
+        try XCTUnwrap(rep.representation(using: .png, properties: [:])).write(to: out.appendingPathComponent("included-engine.png"))
+        window.orderOut(nil)
+    }
+
     func testRenderLauncherForVisualQAFolderBuild() throws {
         guard let directory = ProcessInfo.processInfo.environment["NX_LAUNCHER_CAPTURE_DIR"] else { throw XCTSkip("Set NX_LAUNCHER_CAPTURE_DIR") }
         let stores = LauncherStores()

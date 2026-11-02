@@ -310,9 +310,9 @@ nothing changes: Homebrew's tools, a system Python or the launcher's venv. To tr
 
 The interface follows the system language at every launch: a device language that has a file in
 `l10n/` gets that language (any Chinese variant gets Chinese, Swedish gets Swedish, German gets German,
-French gets French) and every other language gets English. Settings > Language overrides
+French gets French, Spanish gets Spanish) and every other language gets English. Settings > Language overrides
 that. The texts and the language list are not in Swift. Every language is one JSON file in `l10n/`
-(`en.json`, `zh.json`, `sv.json`, `de.json`, `fr.json`): a flat object with the keys sorted, UTF-8 text
+(`en.json`, `zh.json`, `sv.json`, `de.json`, `fr.json`, `es.json`): a flat object with the keys sorted, UTF-8 text
 without escapes, and a `_language` entry. It holds the language's own name (`name`, which the picker
 shows), the lowercased locale prefixes that select it (`locales`) and optionally its place in the picker
 (`order`, languages without one come last by code).
@@ -322,7 +322,8 @@ language is one new file under `l10n/`: the picker, the device detection and the
 change in Swift, and the iOS shell offers it too (below). A new string is a line in
 `l10n/en.json` and one in `l10n/zh.json`: English and Chinese have every key. Swedish, German and French
 may miss a key and then show the English text, and `GermanLocalizationTests` and
-`FrenchLocalizationTests` check the entries they have (placeholders match the English text). The Windows
+`FrenchLocalizationTests` check the entries they have (placeholders match the English text). Spanish includes every key and recognizes Spanish locales such as es-CL, es-ES and es-419.
+The Windows
 launcher reads the same files, so one edit serves both.
 
 `LocalizationKeyTests` (Mac) and `test_localization_keys.py` (Qt) keep the code and `en.json` in step: a key a lookup

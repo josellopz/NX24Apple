@@ -9,6 +9,12 @@
             "value": "\"%@\" is not a DM_ switch."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"%@\" no es una opción DM_."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -23,6 +29,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ (from Settings)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (de Ajustes)"
           }
         },
         "zh-Hans": {
@@ -41,6 +53,12 @@
             "value": "%@ appears twice in launcher.json."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ aparece dos veces en launcher.json."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -55,6 +73,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ has a wrong or missing value at \"%@\"."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tiene un valor incorrecto o ausente en \"%@\"."
           }
         },
         "zh-Hans": {
@@ -73,6 +97,12 @@
             "value": "%@ has no \"%@\"%@."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no tiene \"%@\"%@."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -87,6 +117,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ has the unknown kind \"%@\"."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tiene el tipo desconocido \"%@\"."
           }
         },
         "zh-Hans": {
@@ -105,6 +141,12 @@
             "value": "%@ is a choice without [value, label] options."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ es una selección sin opciones [value, label]."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -119,6 +161,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ is a range without min, max and step."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ es un rango sin min, max y step."
           }
         },
         "zh-Hans": {
@@ -137,6 +185,12 @@
             "value": "%@ is not in this game's folder. Install the game again."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no está en la carpeta de este juego. Instálalo otra vez."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -151,6 +205,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ is not valid JSON."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ no es JSON válido."
           }
         },
         "zh-Hans": {
@@ -169,6 +229,12 @@
             "value": "%lld additional content packs"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld paquetes de contenido adicional"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -183,6 +249,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "1 additional content pack"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 paquete de contenido adicional"
           }
         },
         "zh-Hans": {
@@ -201,6 +273,12 @@
             "value": "Can't read this game"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede leer este juego"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -215,6 +293,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose a RomFS folder or romfs.img on this device, an external drive, or iCloud Drive."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige una carpeta RomFS o romfs.img de este dispositivo, una unidad externa o iCloud Drive."
           }
         },
         "zh-Hans": {
@@ -233,6 +317,12 @@
             "value": "Done"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -247,6 +337,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Game code missing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta el código del juego"
           }
         },
         "zh-Hans": {
@@ -265,6 +361,12 @@
             "value": "Game files damaged"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivos del juego dañados"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -279,6 +381,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Game manifest missing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta el manifiesto del juego"
           }
         },
         "zh-Hans": {
@@ -297,6 +405,12 @@
             "value": "Launching is not available yet."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no se puede iniciar."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -311,6 +425,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Manifest not supported"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manifiesto incompatible"
           }
         },
         "zh-Hans": {
@@ -329,6 +449,12 @@
             "value": "No additional content"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin contenido adicional"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -343,6 +469,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No game data for %@ was found in that folder."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontraron datos de %@ en esa carpeta."
           }
         },
         "zh-Hans": {
@@ -361,6 +493,12 @@
             "value": "No update address is set up for this app."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta app no tiene una dirección de actualización configurada."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -375,6 +513,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "OK"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceptar"
           }
         },
         "zh-Hans": {
@@ -393,6 +537,12 @@
             "value": "Only the end of the log is shown."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo se muestra el final del registro."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -407,6 +557,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Player %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugador %@"
           }
         },
         "zh-Hans": {
@@ -425,6 +581,12 @@
             "value": "Settings list damaged"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista de ajustes dañada"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -439,6 +601,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Settings list missing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta la lista de ajustes"
           }
         },
         "zh-Hans": {
@@ -457,6 +625,12 @@
             "value": "Settings list not supported"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista de ajustes incompatible"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -471,6 +645,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shell"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biblioteca de juegos"
           }
         },
         "zh-Hans": {
@@ -489,6 +669,12 @@
             "value": "That folder could not be remembered. Try a different one."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo guardar esa carpeta. Prueba con otra."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -503,6 +689,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "That location could not be remembered. Try a different one."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo guardar esa ubicación. Prueba con otra."
           }
         },
         "zh-Hans": {
@@ -521,6 +713,12 @@
             "value": "The folder is named %@ but the manifest says %@."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La carpeta se llama %@, pero el manifiesto indica %@."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -535,6 +733,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The folder you chose before is no longer readable. Please choose it again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya no se puede leer la carpeta elegida. Vuelve a seleccionarla."
           }
         },
         "zh-Hans": {
@@ -553,6 +757,12 @@
             "value": "The game's code is missing from this app. Rebuild and reinstall it."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta el código del juego en esta app. Vuelve a compilar e instalar."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -567,6 +777,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The game's manifest"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El manifiesto del juego"
           }
         },
         "zh-Hans": {
@@ -585,6 +801,12 @@
             "value": "The location you picked before is no longer readable (the app was signed differently). Please choose it again."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya no se puede leer la ubicación elegida (cambió la firma de la app). Vuelve a seleccionarla."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -599,6 +821,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The manifest lists no modules."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El manifiesto no indica ningún módulo."
           }
         },
         "zh-Hans": {
@@ -617,6 +845,12 @@
             "value": "The settings list"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La lista de ajustes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -631,6 +865,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This app's folder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carpeta de esta app"
           }
         },
         "zh-Hans": {
@@ -649,6 +889,12 @@
             "value": "This app's folder has no data for this game yet. Copy it to games/%@ in this app's folder in Files."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay datos de este juego en la carpeta de la app. Cópialos a games/%@ en Archivos."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -663,6 +909,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This game has no launcher.json."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este juego no tiene launcher.json."
           }
         },
         "zh-Hans": {
@@ -681,6 +933,12 @@
             "value": "This game has no log yet. It appears after the game has run."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay registro. Se creará al ejecutar el juego."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -695,6 +953,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This game was built for a different version of this app. Update the app or rebuild the game in the launcher on your Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este juego se compiló para otra versión de la app. Actualízala o vuelve a compilar el juego en tu Mac."
           }
         },
         "zh-Hans": {
@@ -713,6 +977,12 @@
             "value": "This game's files are damaged. Rebuild the game in the launcher on your Mac."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los archivos están dañados. Vuelve a compilar el juego en tu Mac."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -727,6 +997,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This game's folder has no game.manifest.json."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La carpeta del juego no tiene game.manifest.json."
           }
         },
         "zh-Hans": {
@@ -745,6 +1021,12 @@
             "value": "This game's manifest is damaged. Rebuild the game in the launcher on your Mac."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El manifiesto está dañado. Vuelve a compilar el juego en tu Mac."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -759,6 +1041,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This game's manifest is missing. Rebuild the game in the launcher on your Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta el manifiesto. Vuelve a compilar el juego en tu Mac."
           }
         },
         "zh-Hans": {
@@ -777,6 +1065,12 @@
             "value": "This game's settings list is damaged. Rebuild the game in the launcher on your Mac."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La lista de ajustes está dañada. Vuelve a compilar el juego en tu Mac."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -791,6 +1085,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This game's settings list is missing. Rebuild the game in the launcher on your Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta la lista de ajustes. Vuelve a compilar el juego en tu Mac."
           }
         },
         "zh-Hans": {
@@ -809,6 +1109,12 @@
             "value": "Unknown game"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Juego desconocido"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -823,6 +1129,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "chain \"%@\" is not of the form b-<hex>."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chain \"%@\" no tiene el formato b-<hex>."
           }
         },
         "zh-Hans": {
@@ -841,6 +1153,12 @@
             "value": "framework \"%@\" is not a .framework name."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "framework \"%@\" no es un nombre .framework."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -855,6 +1173,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "game \"%@\" in launcher.json is not 16 hex digits."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "game \"%@\" en launcher.json no contiene 16 dígitos hexadecimales."
           }
         },
         "zh-Hans": {
@@ -873,6 +1197,12 @@
             "value": "game.manifest.json has schema %lld, this app reads schema %lld."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "game.manifest.json usa el esquema %lld. Esta app admite el esquema %lld."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -887,6 +1217,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "launcher.json has schema %lld, this app reads schema 1."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "launcher.json usa el esquema %lld. Esta app admite el esquema 1."
           }
         },
         "zh-Hans": {
@@ -905,6 +1241,12 @@
             "value": "launcher.json is for %@, the manifest for %@."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "launcher.json corresponde a %@, pero el manifiesto a %@."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -921,6 +1263,12 @@
             "value": "loader \"%@\" is neither FR nor FH."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "loader \"%@\" no es FR ni FH."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -935,6 +1283,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "title_id \"%@\" is not 16 hex digits."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "title_id \"%@\" no contiene 16 dígitos hexadecimales."
           }
         },
         "zh-Hans": {

@@ -38,6 +38,8 @@ import NXCore
     /// A release app builds from the engine store instead, and never clones or pulls.
     package var bundle: URL?
     package var usesEngineStore: Bool { bundle != nil }
+    /// Fork packages keep the engine that carries their folder-build patches, independent of saved upstream channels.
+    package let bundledEngineOnly: Bool
 
     // ---- The engine of a checkout ----
 
@@ -72,6 +74,7 @@ import NXCore
     package init(localizer: Localizer, runner: ProcessRunner, repo: RepoLocation, python: PythonLocation,
                  engineStore: EngineStore = EngineStore(), transport: EngineTransport = URLSessionEngineTransport(),
                  bundle: URL? = EngineBundle.tree(in: Bundle.main.resourceURL), defaults: UserDefaults = .standard,
+                 bundledEngineOnly: Bool = Bundle.main.object(forInfoDictionaryKey: "NX24AppleBundledEngineOnly") as? Bool ?? false,
                  appVersion: String = AppUpdateStore.appVersion,
                  setRepoPath: @escaping (String) -> Void = { _ in }, buildRunning: @escaping () -> Bool = { false },
                  autoUpdate: @escaping () -> Bool = { true }, log: @escaping (String) -> Void = { _ in }) {
@@ -82,6 +85,7 @@ import NXCore
         self.engineStore = engineStore
         self.transport = transport
         self.bundle = bundle
+        self.bundledEngineOnly = bundledEngineOnly && bundle != nil
         self.defaults = defaults
         self.appVersion = appVersion
         self.setRepoPath = setRepoPath
@@ -89,6 +93,7 @@ import NXCore
         self.autoUpdate = autoUpdate
         self.log = log
         selection = EngineSelection.load(defaults)
+        if self.bundledEngineOnly { selection.channel = .stable }
     }
 
     private func t(_ key: String) -> String { localizer.t(key) }
@@ -153,7 +158,7 @@ import NXCore
     package func prepareEngine() -> Task<Void, Never> {
         guard let bundled = bundle, !busy, let id = EngineStore.identity(of: bundled) else { return Task {} }
         let selected = selection.engineID
-        let appMovedOn = selection.channel == .stable && selected != id && selection.version != appVersion
+        let appMovedOn = selected != id && (bundledEngineOnly || (selection.channel == .stable && selection.version != appVersion))
         if !appMovedOn, engineStore.isUsable(selected), let dir = engineStore.directory(for: selected) {
             setRepoPath(dir.path)
             return checkForUpdate(automatic: true)
@@ -196,7 +201,7 @@ import NXCore
 
     /// The channel picker: a different channel is confirmed first, because the switch can change the shader chain.
     package func requestChannel(_ channel: EngineChannel) {
-        guard selection.channel.switchWarningKey(to: channel) != nil, !busy, !buildRunning() else { return }
+        guard !bundledEngineOnly, selection.channel.switchWarningKey(to: channel) != nil, !busy, !buildRunning() else { return }
         confirmingChannel = channel
     }
 
@@ -212,7 +217,7 @@ import NXCore
     /// The selected channel is only changed once its engine is in place, so Settings never names a channel whose
     /// engine the build does not use.
     private func runEngineUpdate(channel: EngineChannel, install: Bool, quiet: Bool) -> Task<Void, Never> {
-        guard usesEngineStore, !busy else { return Task {} }
+        guard usesEngineStore, !bundledEngineOnly, !busy else { return Task {} }
         guard !buildRunning() else {
             if !quiet { status = t("engine.waitForBuild") }
             return Task {}

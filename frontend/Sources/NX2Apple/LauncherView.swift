@@ -318,10 +318,10 @@ struct LauncherView: View {
             let compact = false   // the bar holds the tabs, search and Build game only, as before the console mode
             VStack(spacing: 0) {
                 HStack(spacing: 6) {
-                    // The project is NX2Apple (the user's call: what this fork produces is NX2Apple);
-                    // "by nxnative" credits the engine it stands on, which the sketch kept.
+                    // This fork is NX24Apple, based on NX2Apple.
+                    // "by nxnative" credits the engine it stands on.
                     VStack(alignment: .leading, spacing: -2) {
-                        Text("NX2Apple").font(.manrope(27, .bold)).tracking(-0.8)
+                        Text("NX24Apple").font(.manrope(27, .bold)).tracking(-0.8)
                         Text("— by nxnative").font(.manrope(10.5, .medium))
                             .foregroundStyle(LauncherPalette.unbuilt).tracking(0.2)
                     }
