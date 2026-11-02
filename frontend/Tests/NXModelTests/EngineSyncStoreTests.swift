@@ -65,10 +65,10 @@ import XCTest
         try touch(EngineStore.idFile, in: dir, engineID)
     }
 
-    private func makeStore(bundle: URL? = nil, engines: EngineStore? = nil) -> EngineSyncStore {
+    private func makeStore(bundle: URL? = nil, engines: EngineStore? = nil, bundledOnly: Bool = false) -> EngineSyncStore {
         EngineSyncStore(localizer: localizer, runner: runner, repo: repo, python: python,
                         engineStore: engines ?? EngineStore(root: temporary.appendingPathComponent("engines")),
-                        bundle: bundle, defaults: defaults, appVersion: "1.2.3",
+                        bundle: bundle, defaults: defaults, bundledEngineOnly: bundledOnly, appVersion: "1.2.3",
                         setRepoPath: { [unowned self] in repo.path = $0; movedTo.append($0) },
                         buildRunning: { [unowned self] in building }, autoUpdate: { [unowned self] in autoUpdate },
                         log: { [unowned self] in log.append($0) })
@@ -259,5 +259,45 @@ import XCTest
         XCTAssertEqual(store.detail, String(format: t("engine.detail"), "?", "cccccccc"))
         store.selection.version = "1.2.3"
         XCTAssertEqual(store.detail, String(format: t("engine.detail"), "1.2.3", "cccccccc"))
+    }
+
+    func testForkPackageReplacesSavedExperimentalEngineWithItsBundledEngine() async throws {
+        let engines = EngineStore(root: temporary.appendingPathComponent("engines"))
+        let bundled = temporary.appendingPathComponent("bundled")
+        for file in EngineStore.requiredFiles { try touch(file, in: bundled) }
+        try touch(EngineStore.idFile, in: bundled, id("a"))
+        try install(id("b"), in: engines)
+        EngineSelection(channel: .experimental, engineID: id("b"), version: "1.2.3", previousID: "").save(defaults)
+        let store = makeStore(bundle: bundled, engines: engines, bundledOnly: true)
+        await store.prepareEngine().value
+        XCTAssertEqual(store.selection.engineID, id("a"))
+        XCTAssertEqual(store.selection.channel, .stable)
+        XCTAssertEqual(repo.path, engines.directory(for: id("a"))?.path)
+        XCTAssertEqual(EngineSelection.load(defaults).engineID, id("a"))
+        XCTAssertNil(store.available)
+        store.requestChannel(.experimental)
+        XCTAssertNil(store.confirmingChannel)
+        await store.checkForUpdate().value
+        await store.confirmChannel(.experimental).value
+        XCTAssertEqual(store.selection.engineID, id("a"))
+        XCTAssertFalse(store.busy)
+    }
+
+    func testForkEngineSwitchWaitsForAnActiveBuild() async throws {
+        let engines = EngineStore(root: temporary.appendingPathComponent("engines"))
+        let bundled = temporary.appendingPathComponent("bundled")
+        for file in EngineStore.requiredFiles { try touch(file, in: bundled) }
+        try touch(EngineStore.idFile, in: bundled, id("a"))
+        EngineSelection(channel: .experimental, engineID: id("b"), version: "1.2.3", previousID: "").save(defaults)
+        repo.path = "/current-build"
+        building = true
+        let store = makeStore(bundle: bundled, engines: engines, bundledOnly: true)
+        await store.prepareEngine().value
+        XCTAssertEqual(repo.path, "/current-build")
+        XCTAssertEqual(store.pendingEngine?.engine.id, id("a"))
+        building = false
+        store.applyPendingEngine()
+        XCTAssertEqual(store.selection.engineID, id("a"))
+        XCTAssertEqual(repo.path, engines.directory(for: id("a"))?.path)
     }
 }

@@ -38,6 +38,32 @@ import NXModel
         return app
     }
 
+    func testExtractedBuildRemembersNPDMIdentityAndRestoresSourceAfterReload() throws {
+        let stores = LauncherStores()
+        let model = stores.build, oldTarget = stores.build.target, oldOutput = stores.build.outDir
+        defer { model.target = oldTarget; model.outDir = oldOutput }
+        let source = temporary.appendingPathComponent("Example game")
+        try ExtractedFixture.make(at: source)
+        model.slots[0].paths = ["/other/Unrelated [0100000000010000].nsp"]
+        model.selectDump(source.path)
+        model.outDir = temporary.path
+        let file = temporary.appendingPathComponent("library.json")
+        let library = GameLibrary(file: file)
+        let id = try XCTUnwrap(library.rememberInputs(model))
+        let game = try XCTUnwrap(GameLibrary(file: file).games.first)
+        XCTAssertEqual(game.titleID, ExtractedFixture.titleID)
+        XCTAssertEqual(game.sourceFolder, source.path)
+        XCTAssertEqual(game.inputs, ["dump": [source.path]])
+        model.resetExtractedInputs()
+        model.restoreExtractedInputs(game.inputs["dump"]?.first)
+        XCTAssertTrue(model.dumpMode)
+        XCTAssertEqual(model.dumpLayout?.titleID, ExtractedFixture.titleID)
+        let app = try makeApp(ExtractedFixture.titleID, name: "Example")
+        library.recordCompletedApp(path: app.path, for: id)
+        XCTAssertEqual(GameLibrary(file: file).games.first?.appPath, app.path)
+        XCTAssertEqual(library.games.count, 1)
+    }
+
     /// The library opens on the player's own games: Owned is the default, also for the "all" an earlier build may have stored.
     func testLibraryFilterDefaultsToOwned() throws {
         let defaults = try XCTUnwrap(UserDefaults(suiteName: "nxnative-tests-filter-" + temporary.lastPathComponent))

@@ -76,23 +76,24 @@ final class LauncherDropdownTests: XCTestCase {
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
         let app = NSApplication.shared
         app.setActivationPolicy(.accessory)
-        let options = [(value: "", label: L10n.string("settings.language.system", .de)), (value: "zh", label: Lang("zh").name),
-                       (value: "en", label: Lang("en").name), (value: "sv", label: Lang("sv").name),
-                       (value: "de", label: Lang("de").name)]
-        let width: CGFloat = 620, height: CGFloat = 330
+        let lang = CaptureLanguage.current(.de)
+        let label = L10n.string("settings.language", lang)
+        let options = [(value: "", label: L10n.string("settings.language.system", lang))]
+            + Lang.all.map { (value: $0.code, label: $0.name) }
+        let width: CGFloat = 620, height: CGFloat = 430
         let rows = VStack(alignment: .trailing, spacing: 6) {
             HStack {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(L10n.string("settings.language", .de)).font(.manrope(14))
-                    Text(L10n.string("settings.language.system", .de)).font(.manrope(12.5)).foregroundStyle(.secondary)
+                    Text(label).font(.manrope(14))
+                    Text(L10n.string("settings.language.system", lang)).font(.manrope(12.5)).foregroundStyle(.secondary)
                 }
                 Spacer()
-                LauncherDropdown(options: options, selection: "", label: "Sprache", style: .button) { _ in }
+                LauncherDropdown(options: options, selection: "", label: label, style: .button) { _ in }
                     .launcherRowControls()
             }
             .padding(.horizontal, 18).padding(.vertical, 13)
             .background(LauncherPalette.surface.opacity(0.75), in: RoundedRectangle(cornerRadius: 14))
-            LauncherDropdownList(options: options, selection: "de", label: "Sprache", choose: { _ in }, close: {})
+            LauncherDropdownList(options: options, selection: lang.code, label: label, choose: { _ in }, close: {})
                 .frame(width: LauncherDropdownLayout.width(labels: options.map(\.label), button: 150), height: LauncherDropdownLayout.contentHeight(rows: options.count))
                 .launcherDropdownSurface()
         }

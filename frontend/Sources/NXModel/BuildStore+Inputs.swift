@@ -10,6 +10,8 @@ extension BuildStore {
     /// Subfolders are scanned too — a dump usually arrives as 本体/ 更新/ DLC/ folders —
     /// pruning the build folders this pipeline itself writes so a rescan is not slow.
     package func scan(folder: String) {
+        guard !running else { return }
+        if dumpMode || ExtractedGame.looksLikeDump(folder) { selectDump(folder); return }
         gameDir = folder
         let found = GameInputs.classify(GameInputs.inputFiles(in: folder))
         updateSlot("base") { $0.paths = found.base.map { [$0] } ?? []; $0.problem = found.base == nil ? "data.noBase" : "" }
@@ -40,6 +42,7 @@ extension BuildStore {
 
     /// Asks the app's file picker for files for one row and takes them. The panel is AppKit's: it reaches the store as `pickFiles`.
     package func pickFiles(kind: InputKind) {
+        guard !running else { return }
         var message: String?, prompt: String?
         switch kind {
         case .dlc:
@@ -56,6 +59,8 @@ extension BuildStore {
     /// Files chosen for one row: those that fit it are taken, the first that does not is named on the row
     /// and left out (it is not moved to another row: the row the user chose stays as they set it).
     package func take(picked: [String], kind: InputKind) {
+        guard !running else { return }
+        dumpMode = false
         let id = kind == .base ? "base" : kind == .update ? "update" : kind == .dlc ? "dlc" : "keys"
         let baseName = kind == .base ? nil : (basePath as NSString).lastPathComponent
         var fitting: [String] = [], problem = ""

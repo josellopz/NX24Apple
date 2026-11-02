@@ -454,7 +454,7 @@ final class GameLibrary: ObservableObject {
                 let previousSelection = self.selectedID
                 for source in sources {
                     if var existing = self.games.first(where: { $0.titleID == source.titleID }) {
-                        if existing.inputs["base", default: []].isEmpty { existing.inputs = source.inputs }
+                        if existing.inputs["base", default: []].isEmpty && existing.inputs["dump", default: []].isEmpty { existing.inputs = source.inputs }
                         else {
                             // Slots the library has empty and the scan fills: an update or DLC added since, or a game
                             // recorded before the scan climbed out of a "nsp本体" folder (nothing was found beside it then).
@@ -490,16 +490,16 @@ final class GameLibrary: ObservableObject {
     }
 
     @MainActor @discardableResult func rememberInputs(_ model: BuildStore) -> UUID? {
-        guard !model.basePath.isEmpty else { return nil }
-        let titleID = TitleID.parse(model.basePath).map { String(format: "%016llX", $0) }
-            ?? URL(fileURLWithPath: model.basePath).standardizedFileURL.path
-        var game = games.first { $0.titleID == titleID } ?? LibraryGame(titleID: titleID, name: Self.title(for: model.basePath, repo: model.repo.path, titleID: titleID))
-        game.inputs = Dictionary(uniqueKeysWithValues: model.slots.map { ($0.id, $0.paths) })
+        guard !model.selectedSourcePath.isEmpty, !model.dumpMode || model.dumpLayout != nil else { return nil }
+        let titleID = model.selectedTitleID.isEmpty
+            ? URL(fileURLWithPath: model.selectedSourcePath).standardizedFileURL.path : model.selectedTitleID
+        var game = games.first { $0.titleID == titleID } ?? LibraryGame(titleID: titleID, name: Self.title(for: model.selectedSourcePath, repo: model.repo.path, titleID: titleID))
+        game.inputs = model.dumpMode ? ["dump": [model.dumpFolder]] : Dictionary(uniqueKeysWithValues: model.slots.map { ($0.id, $0.paths) })
         game.outputDirectory = model.outDir
-        if !model.gameDir.isEmpty { game.sourceFolder = model.gameDir }
+        if !model.inputFolder.isEmpty { game.sourceFolder = model.inputFolder }
         game.lastTarget = model.target
         // An existing output is linked only after validating its metadata and executables.
-        let dir = model.outDir.isEmpty ? URL(fileURLWithPath: model.basePath).deletingLastPathComponent().path : model.outDir
+        let dir = model.outDir.isEmpty ? model.defaultOutputFolder : model.outDir
         let expected = URL(fileURLWithPath: dir).appendingPathComponent(titleID + ".app")
         if let app = try? MacGameBundle.read(expected), app.titleID == titleID { game.appPath = expected.path }
         upsert(game)

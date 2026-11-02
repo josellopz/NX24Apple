@@ -1,0 +1,120 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Codex <codex@localhost>
+Date: Mon, 2 Nov 2026 16:26:41 -0300
+Subject: [PATCH] Accept complete update dumps without base RomFS
+
+Upstream-Status: pending
+Reason: Accept complete update ExeFS and RomFS without inventing a base version in experimental folder builds
+Issue: josellopz/NX2Apple#1
+
+---
+ dm/tools/tests/test_nsp_dump.py | 26 ++++++++++++++++++++++++++
+ scripts/build_ipa_from_nsp.py   |  9 +++++++++
+ scripts/pack_dump.py            |  9 +++++++--
+ 3 files changed, 42 insertions(+), 2 deletions(-)
+
+diff --git a/dm/tools/tests/test_nsp_dump.py b/dm/tools/tests/test_nsp_dump.py
+index 36fb3d0..5ecae7d 100644
+--- a/dm/tools/tests/test_nsp_dump.py
++++ b/dm/tools/tests/test_nsp_dump.py
+@@ -3,6 +3,7 @@ The run stops at the prerequisite check; no game files, keys or Xcode needed."""
+ import importlib.util
+ from pathlib import Path
+ import struct
++import shutil
+ import sys
+ import tempfile
+ import unittest
+@@ -63,6 +64,25 @@ class Scan(Base):
+         with self.assertRaisesRegex(pack_dump.Error, 'not a base title ID'): pack_dump.scan(d)
+         with self.assertRaisesRegex(pack_dump.Error, 'no base/exefs'): pack_dump.scan(self.dump.parent)
+ 
++    def test_update_only_romfs_keeps_its_version_and_never_advertises_base(self):
++        shutil.rmtree(self.dump / 'base/romfs')
++        self.assertTrue(nsp.dump_folder(self.dump))
++        app, fam = nsp.scan_dump(self.dump)
++        self.assertEqual(app, TID)
++        have = nsp.nsp_versions(fam, {})
++        self.assertEqual(have, {f'v{VER}': self.dump / f'updates/{VER}'})
++        self.assertNotIn('v0', have)
++        with self.assertRaisesRegex(nsp.BuildError, 'no NSP for update v0'):
++            nsp.pick_nsps(fam, have, ['v0'])
++        self.assertEqual(nsp.pick_nsps(fam, have, [f'v{VER}'])[f'v{VER}'][1], self.dump / f'updates/{VER}')
++
++    def test_missing_romfs_everywhere_is_not_a_dump(self):
++        shutil.rmtree(self.dump / 'base/romfs')
++        shutil.rmtree(self.dump / f'updates/{VER}/romfs')
++        self.assertFalse(nsp.dump_folder(self.dump))
++        with self.assertRaisesRegex(pack_dump.Error, 'complete updates'):
++            pack_dump.scan(self.dump)
++
+     def test_packages_win_over_the_layout(self):
+         self.assertTrue(nsp.dump_folder(self.dump))
+         (self.dump / 'game.nsp').write_bytes(b'x')
+@@ -126,6 +146,12 @@ class Main(Base):
+         self.assertEqual(work, self.dump / f'{TID:016X}_build')
+         self.assertTrue(any(s.startswith('a dump folder: ') for s in said), said)
+ 
++    def test_update_without_base_romfs_reaches_prerequisites_without_keys(self):
++        shutil.rmtree(self.dump / 'base/romfs')
++        _, said = self.run_main()
++        self.assertTrue(any(s.startswith('a dump folder: ') for s in said), said)
++        self.assertFalse((self.dump / 'base/romfs').exists())
++
+     def test_title_id_must_match(self):
+         with mock.patch.object(nsp, 'find_repo', return_value=REPO), mock.patch.object(nsp, 'configure_dotnet'), self.assertRaisesRegex(nsp.BuildError, 'which holds'):
+             nsp.main(nsp.parse_args([str(self.dump), '--title-id', '0100000000010000']))
+diff --git a/scripts/build_ipa_from_nsp.py b/scripts/build_ipa_from_nsp.py
+index e740af7..3792914 100755
+--- a/scripts/build_ipa_from_nsp.py
++++ b/scripts/build_ipa_from_nsp.py
+@@ -609,9 +609,18 @@ def vnum(ver):   # 'v655360' → 655360
+     return int(ver[1:])
+ 
+ 
++def dump_versions(fam):
++    # Missing base RomFS is not v0. Preserve update numbers so profile derivation never
++    # pairs base executable code with an update's data or advertises an unavailable base.
++    out = {'v0': None} if (fam['base'] / 'romfs').is_dir() else {}
++    out.update((f'v{v}', p) for v, p in fam['updates'])
++    return out
++
++
+ def nsp_versions(fam, builds):
+     """The versions the folder holds: {version: its update NSP, or None for v0 (the base game alone)}. An update is known by the [v<N>] tag in its file name; a single update without one
+     is taken for the newest update the profile registers (its build IDs are checked once extracted), and is left out when the profile registers none or other updates are there"""
++    if fam.get('dump'): return dump_versions(fam)
+     out = {'v0': None}
+     for v, p in fam['updates']:
+         if v is not None: out[f'v{v}'] = p
+diff --git a/scripts/pack_dump.py b/scripts/pack_dump.py
+index 9e8b198..0806bf8 100644
+--- a/scripts/pack_dump.py
++++ b/scripts/pack_dump.py
+@@ -5,6 +5,7 @@
+ #   base/exefs/ (main, main.npdm, sdk, rtld, subsdk*), base/romfs/
+ #   updates/<version>/exefs/, updates/<version>/romfs/   (optional; <version> is the title version as a decimal number, 458752 = 0x70000)
+ #   dlc/<DLC title ID>/<n>/romfs/   (optional; the DLC title ID in hex)
++# base/romfs may be absent when a complete update (exefs and romfs) is supplied.
+ # An update's RomFS in such a dump is the patched RomFS (base + the update's BKTR patch, the tree the game sees), not a patch: it is packed on its own, never laid over the base
+ # (Donkey Kong Bananza 458752 drops 42 base files, among them the Product.100 tables its Product.200 ones replace).
+ # Writes, under the build folder (<dump folder>/<title ID>_build unless --work-dir names another):
+@@ -53,12 +54,16 @@ def pack(src, img, say=print):
+ 
+ 
+ def is_dump(folder):   # whether a folder has the layout above
+-    return (folder / 'base/exefs/main.npdm').is_file() and (folder / 'base/romfs').is_dir()
++    if not (folder / 'base/exefs/main.npdm').is_file(): return False
++    if (folder / 'base/romfs').is_dir(): return True
++    updates = folder / 'updates'
++    return updates.is_dir() and any(p.is_dir() and p.name.isdigit() and int(p.name) > 0
++        and (p / 'exefs/main').is_file() and (p / 'exefs/main.npdm').is_file() and (p / 'romfs').is_dir() for p in updates.iterdir())
+ 
+ 
+ def scan(dump):
+     """What a dump folder holds: (title ID, {update version: its folder}, {DLC title ID: its RomFS folder})"""
+-    if not is_dump(dump): raise Error(f'{dump}: no base/exefs/main.npdm and base/romfs')
++    if not is_dump(dump): raise Error(f'{dump}: no base/exefs/main.npdm with base/romfs or a complete updates/<version>/exefs and romfs')
+     app = program_id(dump / 'base/exefs/main.npdm')
+     if app & 0xFFF: raise Error(f'{dump}: base program ID {app:016X} is not a base title ID')
+     vers = {int(p.name): p for p in (dump / 'updates').iterdir() if p.is_dir() and p.name.isdigit()} if (dump / 'updates').is_dir() else {}
