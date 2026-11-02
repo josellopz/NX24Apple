@@ -2,7 +2,7 @@
 
 Fork personal de [NX2Apple](https://github.com/LNPANDY/NX2Apple), mantenido por [@josellopz](https://github.com/josellopz), con integración experimental de juegos extraídos de Nintendo Switch 2 en la interfaz macOS.
 
-[Descargar la última versión de este fork](https://github.com/josellopz/NX2Apple/releases/latest) · [Cambios de Switch 2](https://github.com/josellopz/NX2Apple/pull/1) · [Documentación del proyecto original](README.upstream.md)
+[Descargar la última versión de este fork](https://github.com/josellopz/NX24Apple/releases/latest) · [Cambios de Switch 2](https://github.com/josellopz/NX24Apple/pull/1) · [Documentación del proyecto original](README.upstream.md)
 
 ## Qué añade este fork
 
@@ -36,7 +36,7 @@ Captura aportada por @josellopz en su MacBook Pro M3 Pro. El contador muestra ap
 
 ## Descargar y abrir
 
-1. Descarga el ZIP para macOS arm64 desde las [versiones de este fork](https://github.com/josellopz/NX2Apple/releases/latest).
+1. Descarga el ZIP para macOS arm64 desde las [versiones de este fork](https://github.com/josellopz/NX24Apple/releases/latest).
 2. Descomprime la carpeta completa.
 3. Cuando termine cualquier compilación en curso, cierra la otra copia de NX2Apple o NX24Apple y abre **NX24Apple.app**. La propia app selecciona el motor corregido incluido. **Abrir NX24Apple.command** es un acceso alternativo que comprueba si hay otra instancia abierta.
 4. En **Compilar juego**, elige el origen experimental de carpetas y selecciona tu juego.
