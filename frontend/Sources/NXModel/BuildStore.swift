@@ -71,6 +71,8 @@ func hop(_ body: @escaping @MainActor () -> Void) {
     @Published package var dumpFolder = ""
     @Published package var dumpProblem = ""
     @Published package var dumpLayout: ExtractedGame.Layout?
+    @Published package var nupImporting = false
+    @Published package var nupImportMessage = ""
     @Published package var gameDir = ""
     @Published package var slots: [Slot] = [
         Slot(id: "base", kind: .base, title: "data.base", optional: false),

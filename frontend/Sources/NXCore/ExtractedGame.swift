@@ -63,8 +63,11 @@ package enum ExtractedGame {
         guard hasBaseRomfs || !versions.isEmpty else { throw Problem("dump.noRomfs", "") }
         if fm.fileExists(atPath: root + "/dlc") {
             for name in try contents(root + "/dlc") where !name.hasPrefix(".") {
-                guard name.count == 16, let tid = UInt64(name, radix: 16), tid > app,
-                      tid - app > 0x1000, tid - app - 0x1000 <= 2000 else { throw Problem("dump.dlcID", name) }
+                guard name.utf8.count == 16, let tid = UInt64(name, radix: 16), tid != app,
+                      ((tid & ~UInt64(0xFFF)) == (app & ~UInt64(0xFFF)) ||
+                       (tid > app && tid - app > 0x1000 && tid - app - 0x1000 <= 2000)) else {
+                    throw Problem("dump.dlcID", name)
+                }
                 let path = root + "/dlc/" + name
                 let children = try contents(path)
                 let nested = children.filter { isDirectory(path + "/" + $0 + "/romfs") }

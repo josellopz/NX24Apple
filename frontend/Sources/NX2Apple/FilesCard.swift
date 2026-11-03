@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import UniformTypeIdentifiers
 import NXCore
 import NXLauncher
 import NXModel
@@ -22,6 +23,16 @@ struct FilesCard: View {
                     Text(loc.t("dump.packages")).tag(false)
                     Text(loc.t("dump.experimental")).tag(true)
                 }.labelsHidden().pickerStyle(.menu)
+            }
+            CardDivider()
+            CardRow(loc.t("dump.nupTitle"), detail: loc.t("dump.nupHint")) {
+                Button(build.nupImporting ? loc.t("dump.importing") : loc.t("dump.importNup"), action: pickNup)
+                    .disabled(build.nupImporting)
+            }
+            if !build.nupImportMessage.isEmpty {
+                Text(build.nupImportMessage).font(.manrope(12))
+                    .foregroundStyle(build.nupImporting || build.nupImportMessage == loc.t("dump.imported") ? .secondary : LauncherPalette.building)
+                    .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 18).padding(.vertical, 8)
             }
             CardDivider()
             Button(action: pickFolder) {
@@ -85,5 +96,13 @@ struct FilesCard: View {
         d.message = loc.t(build.dumpMode ? "dump.panel" : "build.folderNote")
         d.canChooseDirectories = true; d.canChooseFiles = false
         if d.runModal() == .OK, let u = d.url { build.scan(folder: u.path) }
+    }
+
+    private func pickNup() {
+        let panel = NSOpenPanel()
+        panel.message = loc.t("dump.nupPanel")
+        panel.canChooseDirectories = false; panel.canChooseFiles = true; panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.init(filenameExtension: "nup")].compactMap { $0 }
+        if panel.runModal() == .OK, let url = panel.url { build.importNup(url.path) }
     }
 }
