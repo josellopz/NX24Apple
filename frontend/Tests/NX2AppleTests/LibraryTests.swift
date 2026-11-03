@@ -288,23 +288,35 @@ import NXModel
         p.arguments = ["-c", "sleep 60 & sleep 60 & wait"]
         ProcessGroups.inOwnGroup(p, python: "/usr/bin/python3")
         try p.run()
-        func members() -> Int {
-            let ps = Process(), out = Pipe()
+        func members() -> (count: Int, denied: String?) {
+            let ps = Process(), out = Pipe(), err = Pipe()
             ps.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
             ps.arguments = ["-g", String(p.processIdentifier)]
             ps.standardOutput = out
-            try? ps.run(); ps.waitUntilExit()
-            return String(decoding: out.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self).split(separator: "\n").count
+            ps.standardError = err
+            do { try ps.run() } catch { return (0, error.localizedDescription) }
+            ps.waitUntilExit()
+            let error = String(decoding: err.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+            if !error.isEmpty { return (0, error) }
+            return (String(decoding: out.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self).split(separator: "\n").count, nil)
         }
         var tries = 0
-        while members() < 3 && tries < 50 { usleep(100_000); tries += 1 }
-        XCTAssertEqual(members(), 3)   // the shell and its two children, in the leader's group
+        var found = members()
+        if let denied = found.denied {
+            ProcessGroups.endGroup(p.processIdentifier)
+            p.waitUntilExit()
+            throw XCTSkip("This environment does not permit pgrep to inspect process groups: \(denied)")
+        }
+        while found.count < 3 && tries < 50 { usleep(100_000); tries += 1; found = members() }
+        XCTAssertEqual(found.count, 3)   // the shell and its two children, in the leader's group
         let stopped = Date()
         ProcessGroups.endGroup(p.processIdentifier)
         p.waitUntilExit()
         tries = 0
-        while members() > 0 && tries < 30 { usleep(100_000); tries += 1 }
-        XCTAssertEqual(members(), 0)
+        found = members()
+        while found.denied == nil && found.count > 0 && tries < 30 { usleep(100_000); tries += 1; found = members() }
+        if let denied = found.denied { throw XCTSkip("This environment does not permit pgrep to inspect process groups: \(denied)") }
+        XCTAssertEqual(found.count, 0)
         // Ended by the SIGTERM, well before the SIGKILL 5 s later. The shell may die of it or, when its children went
         // first, return from its wait and exit 0: either way the whole group is gone.
         XCTAssertLessThan(Date().timeIntervalSince(stopped), 3)

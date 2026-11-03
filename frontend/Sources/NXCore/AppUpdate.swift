@@ -188,7 +188,7 @@ package enum AppUpdate {
             try? fm.removeItem(at: target)
             try fm.copyItem(at: staged, to: target)
             clearQuarantine(target, runner: runner)
-            if trashOld { try? fm.trashItem(at: current, resultingItemURL: nil) }
+            if trashOld { retire(current, with: fm) }
             return target
         }
         let name = current.deletingPathExtension().lastPathComponent
@@ -201,7 +201,7 @@ package enum AppUpdate {
             let placed = try fm.replaceItemAt(current, withItemAt: incoming, backupItemName: backupName, options: [.withoutDeletingBackupItem])
             let backup = dir.appendingPathComponent(backupName)
             if fm.fileExists(atPath: backup.path) {
-                if trashOld { try? fm.trashItem(at: backup, resultingItemURL: nil) } else { try? fm.removeItem(at: backup) }
+                if trashOld { retire(backup, with: fm) } else { try? fm.removeItem(at: backup) }
             }
             clearQuarantine(placed ?? current, runner: runner)
             return current
@@ -209,6 +209,13 @@ package enum AppUpdate {
             try? fm.removeItem(at: incoming)
             throw InstallError.failed(error.localizedDescription)
         }
+    }
+
+    /// Retire the superseded app. Some volumes do not support moving to Trash; once the replacement
+    /// is safely installed, remove the old bundle in that case so it cannot remain beside the new app.
+    private static func retire(_ old: URL, with fileManager: FileManager) {
+        do { try fileManager.trashItem(at: old, resultingItemURL: nil) }
+        catch { try? fileManager.removeItem(at: old) }
     }
 
     /// The shell script behind `relaunch`: wait until `$1` (a pid) has exited, at most `$3` ticks of 0.2 s,

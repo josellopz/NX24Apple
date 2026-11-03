@@ -2,6 +2,14 @@ import AppKit
 import NXCore
 import NXModel
 
+@MainActor protocol BuildFolderPanelConfigurable: AnyObject {
+    var canCreateDirectories: Bool { get set }
+    var canChooseDirectories: Bool { get set }
+    var canChooseFiles: Bool { get set }
+}
+
+extension NSOpenPanel: BuildFolderPanelConfigurable {}
+
 /// The app's wiring (LNPANDY/NX2Apple#387, step 7): it creates the services and the stores, connects them and hands them to the views.
 /// It holds no logic and no state of its own. Every store is a `let`, and a view takes the stores it shows as its own parameters, so a
 /// change in one store redraws only the views that observe it.
@@ -125,8 +133,14 @@ import NXModel
     /// The panel of the Build tab's Save to folder. It can make a folder, because the folder for the IPA often does not exist yet.
     static func buildFolderPanel() -> NSOpenPanel {
         let d = NSOpenPanel()
-        d.canChooseDirectories = true; d.canChooseFiles = false; d.canCreateDirectories = true
+        configureBuildFolderPanel(d)
         return d
+    }
+
+    static func configureBuildFolderPanel(_ panel: BuildFolderPanelConfigurable) {
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.canCreateDirectories = true
     }
 
     /// Whether the xcode row asks for the iOS SDK. Always, as before, unless the guided setup stored a Mac-only choice

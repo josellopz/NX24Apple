@@ -8,7 +8,7 @@ final class ShellMirrorTests: XCTestCase {
     private var tmp = ""
 
     override func setUpWithError() throws {
-        tmp = NSHomeDirectory() + "/.nspb-mirror-test-\(UUID().uuidString)"
+        tmp = FileManager.default.temporaryDirectory.appendingPathComponent("nspb-mirror-test-\(UUID().uuidString)").path
         try FileManager.default.createDirectory(atPath: tmp, withIntermediateDirectories: true)
     }
 

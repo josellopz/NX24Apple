@@ -219,12 +219,31 @@ final class ProcessRunnerTests: XCTestCase {
         XCTAssertEqual(fake.commands, ["xcrun metal --version"])
     }
 
-    func testMakeVenvLogsWhatTheToolsPrintAndStopsWhenOneFails() {
+    func testMakeVenvLogsPipOutputAndStopsWhenInstallFails() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("nspb-venv-test-" + UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let base = root.appendingPathComponent("python3")
+        let stub = Data("#!/bin/sh\nif [ \"$1\" = \"-c\" ]; then echo 3.12; fi\nexit 0\n".utf8)
+        try stub.write(to: base)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: base.path)
+        let oldVenvDir = Toolchain.venvDir
+        Toolchain.venvDir = root.appendingPathComponent("venv").path
+        defer { Toolchain.venvDir = oldVenvDir }
+        let venvPython = URL(fileURLWithPath: Toolchain.venvDir).appendingPathComponent("bin/python3")
         let fake = FakeProcessRunner()
-        fake.answer = { _ in ProcessResult(status: 1, out: "so far", err: "externally-managed-environment") }
-        let r = Toolchain.makeVenv(base: "/fake/python3", runner: fake)
+        fake.answer = { launch in
+            if launch.arguments.starts(with: ["-m", "venv"]) {
+                try? FileManager.default.createDirectory(at: venvPython.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try? stub.write(to: venvPython)
+                try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: venvPython.path)
+                return ProcessResult()
+            }
+            return ProcessResult(status: 1, out: "so far", err: "externally-managed-environment")
+        }
+        let r = Toolchain.makeVenv(base: base.path, runner: fake)
         XCTAssertFalse(r.ok)
-        XCTAssertTrue(r.log.contains("externally-managed-environment"))
+        XCTAssertTrue(r.log.contains("externally-managed-environment"), "\(r.log)\nCommands: \(fake.commands)")
     }
 }
 

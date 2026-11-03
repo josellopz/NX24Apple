@@ -179,6 +179,9 @@ import NXModel
         defer { try? FileManager.default.removeItem(at: directory) }
         let modelStores = LauncherStores(); let model = modelStores.build
         let library = GameLibrary(file: directory.appendingPathComponent("library.json"))
+        // Each scenario gets the normal device destination. Earlier fixtures may have selected a drive, and DeviceStore persists
+        // that choice in UserDefaults; without resetting it here later scenarios inherit the drive button and its different label.
+        modelStores.deviceStore.sendWhere = SendWhere.device
         try scenario.set(modelStores, library, directory)
         model.lang = lang
         let samples = Samples()
