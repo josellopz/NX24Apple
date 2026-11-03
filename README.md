@@ -2,7 +2,7 @@
 
 Fork personal de [NX2Apple](https://github.com/LNPANDY/NX2Apple), mantenido por [@josellopz](https://github.com/josellopz), con integración experimental de juegos extraídos de Nintendo Switch 2 en la interfaz macOS.
 
-[Descargar la última versión de este fork](https://github.com/josellopz/NX2Apple/releases/latest) · [Cambios de Switch 2](https://github.com/josellopz/NX2Apple/pull/1) · [Documentación del proyecto original](README.upstream.md)
+[Descargar la última versión de este fork](https://github.com/josellopz/NX24Apple/releases/latest) · [Cambios de Switch 2](https://github.com/josellopz/NX24Apple/pull/1) · [Documentación del proyecto original](README.upstream.md)
 
 ## Qué añade este fork
 
@@ -11,15 +11,22 @@ Fork personal de [NX2Apple](https://github.com/LNPANDY/NX2Apple), mantenido por 
 - Selección desde la raíz del juego, `base`, `updates`, una versión o sus carpetas ExeFS/RomFS.
 - Mensajes claros si faltan archivos, la estructura está incompleta o el motor no tiene un perfil para el juego.
 - Flujo de compilación de apps para Mac y conservación de la entrada NSP/XCI de Switch 1.
-- Traducción de la interfaz al español y nombre NX24Apple en preparación. La descarga actual conserva todavía el nombre NX2Apple Experimental.
+- Interfaz en español, con detección del idioma del sistema y selector manual en Ajustes. El nombre visible de la app es NX24Apple.
+- Uso automático del motor incluido del fork, aunque una instalación anterior haya dejado seleccionado Experimental. El motor se actualiza al descargar una nueva versión de este fork.
 
 ## Capturas de la app
 
-Estas capturas muestran la integración de carpetas de este fork, antes de añadir la traducción al español y el nombre NX24Apple.
+Capturas nativas de la interfaz en español, generadas con datos de ejemplo para revisar el diseño. La biblioteca ilustrada no indica compatibilidad verificada de cada juego.
+
+![Biblioteca de NX24Apple con la interfaz en español](screenshots/library-es.png)
 
 ![Selección de carpetas extraídas para compilar una app Mac](screenshots/folder-build.png)
 
 ![Mensaje de validación cuando falta una carpeta necesaria](screenshots/folder-validation.png)
+
+![Ajustes del motor incluido del fork](screenshots/included-engine-es.png)
+
+![Selector de idioma con Español disponible](screenshots/language-es.png)
 
 ## Donkey Kong Bananza en un M3 Pro
 
@@ -29,12 +36,13 @@ Captura aportada por @josellopz en su MacBook Pro M3 Pro. El contador muestra ap
 
 ## Descargar y abrir
 
-1. Descarga el ZIP para macOS arm64 desde las [versiones de este fork](https://github.com/josellopz/NX2Apple/releases/latest).
+1. Descarga el ZIP para macOS arm64 desde las [versiones de este fork](https://github.com/josellopz/NX24Apple/releases/latest).
 2. Descomprime la carpeta completa.
-3. Cierra cualquier otra copia de NX2Apple y abre **Open NX2Apple Experimental.command**, junto a la app. El lanzador selecciona el motor corregido que viene incluido.
-4. En la pantalla de compilación, elige el origen experimental de carpetas y selecciona tu juego.
+3. Cuando termine cualquier compilación en curso, cierra la otra copia de NX2Apple o NX24Apple y abre **NX24Apple.app**. La propia app selecciona el motor corregido incluido. **Abrir NX24Apple.command** es un acceso alternativo que comprueba si hay otra instancia abierta.
+4. En **Compilar juego**, elige el origen experimental de carpetas y selecciona tu juego.
+5. Para cambiar el idioma manualmente, usa **Ajustes > Idioma > Español**.
 
-La app comparte biblioteca y configuración con NX2Apple instalado. El paquete usa firma ad hoc y no está notarizado por Apple. Incluye Python y herramientas de compilación. No contiene juegos, claves, volcados ni apps de juegos generadas.
+La app comparte biblioteca y configuración con NX2Apple instalado. El cambio de nombre conserva el identificador de la app y las rutas existentes. Los registros internos del motor y el idioma de los juegos se gestionan por separado. El paquete usa firma ad hoc y no está notarizado por Apple. Incluye Python y herramientas de compilación. No contiene juegos, claves, volcados ni apps de juegos generadas.
 
 ## Requisitos y límites
 
