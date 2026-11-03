@@ -32,6 +32,12 @@ package struct FilePick: Equatable {
     /// The paired devices the last listing found.
     var devices: [AppleDevice] { get }
     var signingTeam: String { get }
+    /// The build exports the shared app as an IPA instead of installing it.
+    var exportIPA: Bool { get }
+    /// The export makes one game's own IPA with its game data inside (#540).
+    var exportOneGame: Bool { get }
+    /// The folder the game data is copied to (a drive), empty when none is chosen.
+    var driveFolder: String { get set }
     var xcrun: String { get }
     var readTeams: @Sendable () -> [SigningTeam] { get }
     func deviceName(_ udid: String) -> String
@@ -105,6 +111,7 @@ func hop(_ body: @escaping @MainActor () -> Void) {
     /// The one-off `--allow-*` of a confirmed "Build anyway": taken by the next build and never stored.
     package var armedOverride: BuildFailureKind?
     @Published package var macAppPath = ""   // --platform mac-app: the .app this build produced
+    package var oneGameIPAPath = ""   // the IPA a one-game export writes (#540), empty for any other build
     /// BuildTarget.ios = the game's framework in the one shared app on an iPhone or iPad; BuildTarget.mac = a double-clickable
     /// Mac app (upstream's --platform mac-app). A Mac app is a different output of the same pipeline, not a
     /// different pipeline: same extraction, rewrite and shaders, then dm/mac/pack_app.py.
@@ -134,8 +141,12 @@ func hop(_ body: @escaping @MainActor () -> Void) {
     // folder (romfs.img, aoc/) into its Documents, as a sideloaded copy has it. Without a device or a team the build stays an unsigned IPA, as before.
     @Published package var installedOn = ""       // the device the last build went to (its UDID)
     @Published package var installedAppPath = ""  // the signed app that went there
+    @Published package var exportedIPAPath = ""   // the unsigned IPA of an export (#416)
+    @Published package var send: DataSend = .idle  // step 3 of the export: the game data on its way (BuildStore+Send.swift)
+    @Published package var drive: DriveState?      // the chosen folder's volume and what stops the copy (BuildStore+Send.swift)
     var shellRetry: (framework: String, titleID: String, name: String, archive: String)?
     var shellDeviceChecked = false
+    package let driveCancel = LockedFlag()   // Stop of the copy to a drive (BuildStore+Send.swift)
 
     // ---- The app's side: AppKit and the wiring, as closures ----
     package var chooseKeys: (() -> Void)?          // tests stand in for the file picker
@@ -193,6 +204,10 @@ func hop(_ body: @escaping @MainActor () -> Void) {
     package func t(_ key: String) -> String { localizer.t(key) }
 
     /// This iPhone build goes straight to a device.
+    /// An iPhone or iPad build that makes the shared app as an unsigned IPA (#416): no device, no team.
+    package var exportsShell: Bool { target != BuildTarget.mac && devices.exportIPA }
+    /// An export of one game's own IPA with the game data inside (#540): the engine's one-game app, no shared app, nothing to send.
+    package var exportsOneGame: Bool { exportsShell && devices.exportOneGame }
     package var installsDirectly: Bool { target != BuildTarget.mac && !devices.installDevice.isEmpty && !devices.signingTeam.isEmpty }
 
     /// Home shown as ~ (shorter in a one-line row, and it keeps the account name out of screenshots).

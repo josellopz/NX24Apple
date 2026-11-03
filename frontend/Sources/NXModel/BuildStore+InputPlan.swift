@@ -65,7 +65,8 @@ extension BuildStore {
             fail(failureWhat(failure!))
             return false
         }
-        if target != BuildTarget.mac, let why = shellRootProblem() { fail(why); return false }
+        // Match v1.0.2: exporting one game's IPA does not write into the shared shell folder.
+        if target != BuildTarget.mac, !exportsOneGame, let why = shellRootProblem() { fail(why); return false }
 
         return true
     }

@@ -12,18 +12,18 @@ extension BuildStore {
             guard validateDump() else { done = false; doneNote = dumpProblem; return }
         }
         // The shared app needs a device this Mac knows. Found out here, before an hour of building, not after it.
-        if target != BuildTarget.mac, !shellDeviceChecked {
+        if target != BuildTarget.mac, !shellDeviceChecked, !exportsShell {
             guard installsDirectly else { doneNote = t("shell.needsDevice"); done = false; return }
             verifyShellDevice()
             return
         }
         shellDeviceChecked = false
-        if target != BuildTarget.mac, askAboutStaleFrameworks() { return }   // StaleFrameworksPrompt.swift (#449)
+        if target != BuildTarget.mac, !exportsOneGame, askAboutStaleFrameworks() { return }   // StaleFrameworksPrompt.swift (#449)
         stopping = false
         running = true; done = false; doneNote = ""; stages = []; log.clear(); chainNoteShown = false
         failure = nil; confirmingOverride = nil
         let override = takeOverrideFlag()   // for this build only: the next one asks again
-        installedOn = ""; installedAppPath = ""
+        installedOn = ""; installedAppPath = ""; exportedIPAPath = ""; send = .idle
         guard repo.isRepo else {
             fail(repo.path.isEmpty ? t("msg.repoInvalidEmpty") : String(format: t("msg.repoInvalid"), shortPath(repo.path)))
             return
@@ -105,14 +105,19 @@ extension BuildStore {
         }
         if hasWorkDir { args += ["--work-dir", workDir] }
         let macApp = target == BuildTarget.mac
-        if macApp {
+        oneGameIPAPath = ""
+        if exportsOneGame {
+            // One game's own IPA with its game data inside (BuildStore+OneGame.swift, #540)
+            oneGameIPAPath = OneGameIPA.path(folder: outDir.isEmpty ? baseDir : outDir, titleID: tidHex)
+            args += OneGameIPA.arguments(ipa: oneGameIPAPath)
+        } else if macApp {
             // -o names the .app; the RomFS goes inside it, so the archive step is skipped below.
             args += ["--platform", "mac-app"]
             macAppPath = (outDir.isEmpty ? baseDir : outDir) + "/" + tidHex + ".app"
             args += ["-o", macAppPath]
         } else {
             // Only the game's framework: the one shared app is made and signed after the script (installShell)
-            args += ShellInstall.buildArguments(workDir: workDir, team: devices.signingTeam)
+            args += ShellInstall.buildArguments(workDir: workDir, team: exportsShell ? "" : devices.signingTeam)
         }
         // The archive step packs whatever folder the build reported; without --work-dir that is the
         // script's default, which is the same workDir unless a separate output folder was chosen.
@@ -140,6 +145,7 @@ extension BuildStore {
         // The bundled Python lives inside the signed app: a .pyc written there would change what the signature seals
         // (the packages are compiled at bundle time), and a user site must not shadow its pinned packages.
         denv.merge(BundledTools.environment(for: py)) { $1 }
+        if !oneGameIPAPath.isEmpty { denv.merge(OneGameIPA.environment) { $1 } }
         let launch = ProcessLaunch(executable: py, arguments: args, environment: denv, directory: engine, groupPython: py)
         let onExit: @Sendable (Int32) -> Void = { [weak self] status in
             hop {
@@ -155,7 +161,9 @@ extension BuildStore {
                 }
                 if status == 0 {
                     self.markAllDone()
-                    if self.target == BuildTarget.mac {
+                    if !self.oneGameIPAPath.isEmpty {
+                        self.finishOneGameIPA()
+                    } else if self.target == BuildTarget.mac {
                         // The .app is self-contained (its RomFS is inside), and the marker file
                         // beside it (.nx2apple-library, a dot file the Finder hides) tells the
                         // game's launcher that this folder is a library: its saves and log live
@@ -178,7 +186,8 @@ extension BuildStore {
                         let name = ((self.basePath as NSString).lastPathComponent as NSString).deletingPathExtension
                         let fw = ShellInstall.frameworkPath(workDir: self.effectiveWorkDir, titleID: tid)
                         self.packArchive(workDir: self.effectiveWorkDir) {
-                            self.installShell(framework: fw, titleID: tid, name: name, archive: $0)
+                            if self.exportsShell { self.exportShell(framework: fw, titleID: tid, name: name) }
+                            else { self.installShell(framework: fw, titleID: tid, name: name, archive: $0) }
                         }
                     }
                 } else {

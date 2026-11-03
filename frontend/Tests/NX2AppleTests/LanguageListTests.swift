@@ -30,9 +30,9 @@ final class LanguageListTests: XCTestCase {
     }
 
     func testThePickerListsAllLanguagesByTheirOwnNames() {
-        XCTAssertEqual(AppCard.languageCodes, ["", "zh", "en", "sv", "de", "fr", "es"])
-        XCTAssertEqual(Lang.all.map(\.name), ["\u{4E2D}\u{6587}", "English", "Svenska", "Deutsch", "Fran\u{E7}ais", "Español"])
-        XCTAssertEqual(Lang.all, [Lang.zh, .en, .sv, .de, .fr, Lang("es")])
+        XCTAssertEqual(AppCard.languageCodes, ["", "zh", "en", "sv", "de", "fr", "es", "it"])
+        XCTAssertEqual(Lang.all.map(\.name), ["\u{4E2D}\u{6587}", "English", "Svenska", "Deutsch", "Fran\u{E7}ais", "Español", "Italiano"])
+        XCTAssertEqual(Lang.all, [Lang.zh, .en, .sv, .de, .fr, Lang("es"), Lang("it")])
     }
 
     func testFindKnowsACodeOnlyWhenAFileHasIt() {
@@ -59,9 +59,14 @@ final class LanguageListTests: XCTestCase {
             ["en-US", "zh-Hans"], ["ja-JP", "de-DE"], ["de-DE", "en-US"], ["fr-FR", "sv-SE"], [""], ["x"], ["fry-NL"],
         ]
         let languages = LocalizationFiles.languages()
+        // A language whose file came after the five may claim an input the old code gave English: it-IT is Italian now.
+        let added = Set(languages.map(\.code)).subtracting(["zh", "en", "sv", "de", "fr"])
         for preferred in inputs {
-            XCTAssertEqual(Lang.detect(preferred: preferred, among: languages).code, detectedBefore(preferred), "\(preferred)")
+            let got = Lang.detect(preferred: preferred, among: languages).code, before = detectedBefore(preferred)
+            if before == "en", added.contains(got) { continue }
+            XCTAssertEqual(got, before, "\(preferred)")
         }
+        XCTAssertEqual(Lang.detect(preferred: ["it-IT"], among: languages).code, "it")
     }
 
     func testEveryFileSelectsItsOwnLanguageByItsCode() {
@@ -84,9 +89,9 @@ final class LanguageListTests: XCTestCase {
         // The folder is found the way the app finds it: from NX_L10N_DIR.
         XCTAssertEqual(LocalizationFiles.directory(environment: ["NX_L10N_DIR": folder.path])?.path, folder.path)
         let languages = LocalizationFiles.languages(from: folder)
-        // It is in the picker, after the six that have a place, and shows its own name.
-        XCTAssertEqual(languages.map(\.code), ["zh", "en", "sv", "de", "fr", "es", "xx"])
-        XCTAssertEqual(AppCard.languageCodes(among: languages), ["", "zh", "en", "sv", "de", "fr", "es", "xx"])
+        // It follows the ordered languages, while Italian and temporary languages are sorted by code.
+        XCTAssertEqual(languages.map(\.code), ["zh", "en", "sv", "de", "fr", "es", "it", "xx"])
+        XCTAssertEqual(AppCard.languageCodes(among: languages), ["", "zh", "en", "sv", "de", "fr", "es", "it", "xx"])
         XCTAssertEqual(languages.last?.name, "Xenia")
         // The device language selects it by its prefix, and the others still select theirs.
         XCTAssertEqual(Lang.detect(preferred: ["xx-YY"], among: languages), Lang("xx"))
@@ -98,7 +103,7 @@ final class LanguageListTests: XCTestCase {
         XCTAssertEqual(catalogs["xx"]?["onboarding.start"], "Go")
         XCTAssertNil(catalogs["xx"]?["onboarding.later"])
         XCTAssertNotNil(catalogs["en"]?["onboarding.later"])
-        XCTAssertEqual(catalogs.keys.sorted(), ["de", "en", "es", "fr", "sv", "xx", "zh"])
+        XCTAssertEqual(catalogs.keys.sorted(), ["de", "en", "es", "fr", "it", "sv", "xx", "zh"])
     }
 
     func testAFileWithoutALanguageEntryStillWorks() throws {
