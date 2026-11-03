@@ -9,6 +9,12 @@
             "value": "%lld of %lld"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -26,6 +32,12 @@
           }
         },
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 fps"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "30 fps"
@@ -65,6 +77,12 @@
             "value": "60 fps"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "60 fps"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -93,6 +111,12 @@
             "value": "A little room for adventure"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un espacio para la aventura"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -113,6 +137,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adjusts resolution between 70% and 100% under load. Turn off to keep full resolution for the selected console mode."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajusta la resolución entre el 70% y el 100% según la carga. Desactívalo para mantener la resolución completa del modo de consola seleccionado."
           }
         },
         "fr": {
@@ -149,6 +179,12 @@
             "value": "American English"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inglés estadounidense"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -177,6 +213,12 @@
             "value": "App update needed"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es necesario actualizar la app"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -191,6 +233,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Back"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver"
           }
         },
         "zh-Hans": {
@@ -213,6 +261,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Brazilian Portuguese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portugués brasileño"
           }
         },
         "fr": {
@@ -243,6 +297,12 @@
             "value": "Brings back the settings this game was tested with."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaura los ajustes con los que se probó este juego."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -263,6 +323,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "British English"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inglés británico"
           }
         },
         "fr": {
@@ -293,6 +359,12 @@
             "value": "Build this game again on your Mac and install it on this device. The Mac app checks every file while it builds, so the new copy is complete."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuelve a compilar el juego en tu Mac e instálalo aquí. La app Mac comprueba todos los archivos durante la compilación para generar una copia completa."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -313,6 +385,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Canadian French"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francés canadiense"
           }
         },
         "fr": {
@@ -343,6 +421,12 @@
             "value": "Charging"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -357,6 +441,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir"
           }
         },
         "zh-Hans": {
@@ -375,6 +465,12 @@
             "value": "Choose folder…"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir carpeta…"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -389,6 +485,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose game data…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir datos del juego…"
           }
         },
         "zh-Hans": {
@@ -407,6 +509,12 @@
             "value": "Choose the same iCloud Drive folder you use on your Mac."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige la misma carpeta de iCloud Drive que usas en el Mac."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -421,6 +529,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose this game's data to get ready to play."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige los datos de este juego para poder jugar."
           }
         },
         "zh-Hans": {
@@ -439,6 +553,12 @@
             "value": "Choose…"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir…"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -453,6 +573,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Close controllers"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar mandos"
           }
         },
         "zh-Hans": {
@@ -471,6 +597,12 @@
             "value": "Cloud saves"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partidas en la nube"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -485,6 +617,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Connect a controller in Bluetooth settings. Touch controls are always available in the library."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conecta un mando en los ajustes de Bluetooth. Los controles táctiles siempre están disponibles en la biblioteca."
           }
         },
         "zh-Hans": {
@@ -507,6 +645,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Console mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo de consola"
           }
         },
         "fr": {
@@ -537,6 +681,12 @@
             "value": "Controllers"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mandos"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -557,6 +707,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Controls"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controles"
           }
         },
         "fr": {
@@ -587,6 +743,12 @@
             "value": "Decrease"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disminuir"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -601,6 +763,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Details"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalles"
           }
         },
         "zh-Hans": {
@@ -623,6 +791,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Display mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo de pantalla"
           }
         },
         "fr": {
@@ -659,6 +833,12 @@
             "value": "Docked"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectada a la base"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -687,6 +867,12 @@
             "value": "Done"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -701,6 +887,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Double-tap to select"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca dos veces para seleccionar"
           }
         },
         "zh-Hans": {
@@ -723,6 +915,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dutch"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neerlandés"
           }
         },
         "fr": {
@@ -759,6 +957,12 @@
             "value": "Dynamic resolution"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolución dinámica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -793,6 +997,12 @@
             "value": "Encode thread"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hilo de codificación"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -821,6 +1031,12 @@
             "value": "For a bug report"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para informar de un error"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -841,6 +1057,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Frame buffering"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Búfer de fotogramas"
           }
         },
         "fr": {
@@ -877,6 +1099,12 @@
             "value": "Frame rate"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasa de fotogramas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -909,6 +1137,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Frame-rate counter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contador de fotogramas"
           }
         },
         "fr": {
@@ -945,6 +1179,12 @@
             "value": "French"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francés"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -973,6 +1213,12 @@
             "value": "From Settings"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desde Ajustes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -993,6 +1239,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fullscreen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pantalla completa"
           }
         },
         "fr": {
@@ -1029,6 +1281,12 @@
             "value": "Game"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Juego"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1057,6 +1315,12 @@
             "value": "Game data"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos del juego"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1077,6 +1341,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Game language"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma del juego"
           }
         },
         "fr": {
@@ -1113,6 +1383,12 @@
             "value": "Game rumble"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vibración del juego"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1141,6 +1417,12 @@
             "value": "Game settings"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes del juego"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1157,6 +1439,12 @@
             "value": "Games look for their data here. Keep one romfs.img per game in any folder inside. Each game is found by the image itself, so the folder names do not matter. Each game can also have a folder of its own."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los juegos buscan sus datos aquí. Guarda un romfs.img por juego en cualquier subcarpeta. Se identifica por la imagen, sin importar el nombre de la carpeta. Cada juego también puede tener su propia carpeta."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1171,6 +1459,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Games without a folder of their own save here. Choose the same iCloud Drive folder you use on your Mac."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los juegos sin carpeta propia guardan aquí. Elige la misma carpeta de iCloud Drive que usas en el Mac."
           }
         },
         "zh-Hans": {
@@ -1193,6 +1487,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "German"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alemán"
           }
         },
         "fr": {
@@ -1229,6 +1529,12 @@
             "value": "Handheld"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portátil"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1263,6 +1569,12 @@
             "value": "Hold frames when late"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retener fotogramas atrasados"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1291,6 +1603,12 @@
             "value": "How to fix"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo solucionarlo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1305,6 +1623,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "How to update"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo actualizar"
           }
         },
         "zh-Hans": {
@@ -1323,6 +1647,12 @@
             "value": "Increase"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aumentar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1339,6 +1669,12 @@
             "value": "Install a newer version of this app to play this game."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instala una versión más reciente de la app para jugar."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1353,6 +1689,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Interface"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interfaz"
           }
         },
         "zh-Hans": {
@@ -1375,6 +1717,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Italian"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italiano"
           }
         },
         "fr": {
@@ -1411,6 +1759,12 @@
             "value": "Japanese"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japonés"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1443,6 +1797,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keeps a pipeline archive and uses more memory."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserva un archivo de canalizaciones y usa más memoria."
           }
         },
         "fr": {
@@ -1479,6 +1839,12 @@
             "value": "Keeps a pipeline archive; uses more memory."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserva un archivo de canalizaciones y usa más memoria."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1511,6 +1877,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Korean"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coreano"
           }
         },
         "fr": {
@@ -1547,6 +1919,12 @@
             "value": "Latin American Spanish"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Español latinoamericano"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1575,6 +1953,12 @@
             "value": "Library"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biblioteca"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1595,6 +1979,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Metal 4 pipelines"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canalizaciones Metal 4"
           }
         },
         "fr": {
@@ -1631,6 +2021,12 @@
             "value": "MetalFX"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MetalFX"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1659,6 +2055,12 @@
             "value": "Move between controls"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moverse entre controles"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1673,6 +2075,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Needs game data"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faltan los datos del juego"
           }
         },
         "zh-Hans": {
@@ -1691,6 +2099,12 @@
             "value": "No additional content"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin contenido adicional"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1705,6 +2119,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No battery level"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin nivel de batería"
           }
         },
         "zh-Hans": {
@@ -1723,6 +2143,12 @@
             "value": "No controllers connected"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay mandos conectados"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1737,6 +2163,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No data selected"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin datos seleccionados"
           }
         },
         "zh-Hans": {
@@ -1755,6 +2187,12 @@
             "value": "No folder chosen"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin carpeta seleccionada"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1769,6 +2207,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Off"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivado"
           }
         },
         "zh-Hans": {
@@ -1787,6 +2231,12 @@
             "value": "On"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activado"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1801,6 +2251,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "On a controller"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En un mando"
           }
         },
         "zh-Hans": {
@@ -1823,6 +2279,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Performance"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rendimiento"
           }
         },
         "fr": {
@@ -1859,6 +2321,12 @@
             "value": "Performance HUD"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panel de rendimiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1887,6 +2355,12 @@
             "value": "Performance overlay"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panel de rendimiento"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1907,6 +2381,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pipeline prebuild"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precompilación de canalizaciones"
           }
         },
         "fr": {
@@ -1937,6 +2417,12 @@
             "value": "Play"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1951,6 +2437,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Played %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugado %@"
           }
         },
         "zh-Hans": {
@@ -1969,6 +2461,12 @@
             "value": "Played today"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugado hoy"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1983,6 +2481,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Played yesterday"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugado ayer"
           }
         },
         "zh-Hans": {
@@ -2005,6 +2509,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Portuguese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portugués"
           }
         },
         "fr": {
@@ -2035,6 +2545,12 @@
             "value": "Ready to play"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo para jugar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2051,6 +2567,12 @@
             "value": "Recently played"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugados recientemente"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2065,6 +2587,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Remove"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar"
           }
         },
         "zh-Hans": {
@@ -2087,6 +2615,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Render scale"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escala de renderizado"
           }
         },
         "fr": {
@@ -2117,6 +2651,12 @@
             "value": "Reset to tested defaults"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restablecer ajustes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2137,6 +2677,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rumble cutoff"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umbral de vibración"
           }
         },
         "fr": {
@@ -2173,6 +2719,12 @@
             "value": "Rumble strength"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intensidad de vibración"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2207,6 +2759,12 @@
             "value": "Russian"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruso"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2235,6 +2793,12 @@
             "value": "Select"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2251,6 +2815,12 @@
             "value": "Settings"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2265,6 +2835,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Show log"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar registro"
           }
         },
         "zh-Hans": {
@@ -2287,6 +2863,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simplified Chinese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chino simplificado"
           }
         },
         "fr": {
@@ -2323,6 +2905,12 @@
             "value": "Spanish"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Español"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2355,6 +2943,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Standard"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estándar"
           }
         },
         "fr": {
@@ -2391,6 +2985,12 @@
             "value": "The first start waits a few minutes for it, once."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El primer inicio espera unos minutos, solo una vez."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2419,6 +3019,12 @@
             "value": "This game needs a newer version of this app. Update it with the Mac app on your Mac, then install it on this device again."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este juego necesita una versión más reciente de la app. Actualízala desde tu Mac y vuelve a instalarla en este dispositivo."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2433,6 +3039,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Title ID %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID de título %@"
           }
         },
         "zh-Hans": {
@@ -2455,6 +3067,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Touch feedback"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respuesta táctil"
           }
         },
         "fr": {
@@ -2491,6 +3109,12 @@
             "value": "Traditional Chinese"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chino tradicional"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2519,6 +3143,12 @@
             "value": "Turn off"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2535,6 +3165,12 @@
             "value": "Turn off cloud saves"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar partidas en la nube"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2549,6 +3185,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unavailable"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No disponible"
           }
         },
         "zh-Hans": {
@@ -2571,6 +3213,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Up to one frame more display latency."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade hasta un fotograma de latencia de pantalla."
           }
         },
         "fr": {
@@ -2601,6 +3249,12 @@
             "value": "Update app"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizar app"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2621,6 +3275,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Upscaling"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reescalado"
           }
         },
         "fr": {
@@ -2651,6 +3311,12 @@
             "value": "Use Settings folder"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar carpeta de Ajustes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2667,6 +3333,12 @@
             "value": "Use app data"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar datos de la app"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2681,6 +3353,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Used by games that have no choice of their own."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se usa en juegos que no tienen una opción propia."
           }
         },
         "zh-Hans": {
@@ -2703,6 +3381,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uses more GPU time and can increase heat."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa más tiempo de GPU y puede aumentar la temperatura."
           }
         },
         "fr": {
@@ -2733,6 +3417,12 @@
             "value": "Version %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión %@"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2753,6 +3443,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Window"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventana"
           }
         },
         "fr": {
@@ -2783,6 +3479,12 @@
             "value": "Your games"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus juegos"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2797,6 +3499,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your games will appear here when they are included in this app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus juegos aparecerán aquí cuando se incluyan en esta app."
           }
         },
         "zh-Hans": {

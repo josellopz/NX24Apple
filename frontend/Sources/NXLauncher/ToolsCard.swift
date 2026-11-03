@@ -144,10 +144,15 @@ package struct ToolsCard<Diagnostics: View>: View {
                 Button(String(format: loc.t("engine.install"), next.version)) { engine.installAvailable() }.disabled(!idle)
                     .padTarget("set.engineInstall", scope: "main") { if idle { engine.installAvailable() } }
             }
-            Button(loc.t("repo.check")) { engine.checkForUpdate() }.disabled(!idle)
-                .padTarget("set.engineCheck", scope: "main") { if idle { engine.checkForUpdate() } }
+            if !engine.bundledEngineOnly {
+                Button(loc.t("repo.check")) { engine.checkForUpdate() }.disabled(!idle)
+                    .padTarget("set.engineCheck", scope: "main") { if idle { engine.checkForUpdate() } }
+            }
         }
         CardDivider()
+        if engine.bundledEngineOnly {
+            CardRow(loc.t("engine.bundledTitle"), detail: loc.t("engine.bundledNote"), dot: LauncherPalette.ready) { EmptyView() }
+        } else {
         // A different channel is asked about first (the alert below): the switch can recompile every game's shaders
         CardRow(loc.t("engine.update"), detail: loc.t("engine.channelNote"), dot: LauncherPalette.ready) {
             LauncherDropdown(options: EngineChannel.allCases.map { (value: $0.rawValue, label: loc.t($0.labelKey)) },
@@ -168,14 +173,17 @@ package struct ToolsCard<Diagnostics: View>: View {
         } message: {
             Text(engine.confirmingChannel.flatMap { engine.selection.channel.switchWarningKey(to: $0) }.map { loc.t($0) } ?? "")
         }
+        }
         CardDivider()
         CardRow(loc.t("shellCache.row"), detail: loc.t("shellCache.note"), detail2: shellCachePath) {
             Button(loc.t("shellCache.open")) { revealFolder(URL(fileURLWithPath: shellCachePath)) }
                 .buttonStyle(LauncherSecondaryButtonStyle())
         }
-        CardDivider()
-        CardRow(loc.t("repo.auto"), detail: loc.t("engine.autoNote")) {
-            Toggle("", isOn: $repo.autoUpdate).labelsHidden().toggleStyle(LauncherSwitchStyle())
+        if !engine.bundledEngineOnly {
+            CardDivider()
+            CardRow(loc.t("repo.auto"), detail: loc.t("engine.autoNote")) {
+                Toggle("", isOn: $repo.autoUpdate).labelsHidden().toggleStyle(LauncherSwitchStyle())
+            }
         }
     }
 

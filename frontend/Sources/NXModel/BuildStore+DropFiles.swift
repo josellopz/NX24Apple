@@ -9,12 +9,14 @@ extension BuildStore {
     /// One dropped folder is the same as choosing it; anything else (files, several folders, a mix) is added to
     /// what is already chosen: a slot the drop has something for is replaced, add-on content is added to.
     package func take(dropped paths: [String]) {
+        guard !running else { return }
         func isFolder(_ p: String) -> Bool {
             var d: ObjCBool = false
             return FileManager.default.fileExists(atPath: p, isDirectory: &d) && d.boolValue
         }
         if paths.count == 1, isFolder(paths[0]) { scan(folder: paths[0]); return }
         var found = GameInputs.classify(paths.flatMap { isFolder($0) ? GameInputs.inputFiles(in: $0) : [$0] })
+        if found.anyGame || found.keys != nil { dumpMode = false }
         // update and add-on files of another game than the base (the dropped one, else the one already chosen)
         let baseName = (found.base ?? (basePath.isEmpty ? nil : basePath)).map { ($0 as NSString).lastPathComponent }
         var rejected: [InputKind: String] = [:]

@@ -317,13 +317,14 @@ jobs:
             <key>CFBundleIconFile</key><string>AppIcon</string>
             <key>CFBundleIconName</key><string>AppIcon</string>
             <key>CFBundleIdentifier</key><string>org.nxnative.NSPortBuilder</string>
-            <key>CFBundleName</key><string>NX2Apple</string>
-            <key>CFBundleDisplayName</key><string>NX2Apple</string>
+            <key>NX24AppleBundledEngineOnly</key><true/>
+            <key>CFBundleName</key><string>NX24Apple</string>
+            <key>CFBundleDisplayName</key><string>NX24Apple</string>
             <key>CFBundlePackageType</key><string>APPL</string>
             <key>CFBundleShortVersionString</key><string>$V</string>
             <key>CFBundleVersion</key><string>$V</string>
             <key>CFBundleDevelopmentRegion</key><string>en</string>
-            <key>CFBundleLocalizations</key><array><string>en</string><string>zh-Hans</string><string>sv</string><string>de</string><string>fr</string></array>
+            <key>CFBundleLocalizations</key><array><string>en</string><string>zh-Hans</string><string>sv</string><string>de</string><string>fr</string><string>es</string></array>
             <key>LSMinimumSystemVersion</key><string>13.0</string>
             <key>NSHighResolutionCapable</key><true/>
           </dict>

@@ -318,10 +318,10 @@ struct LauncherView: View {
             let compact = false   // the bar holds the tabs, search and Build game only, as before the console mode
             VStack(spacing: 0) {
                 HStack(spacing: 6) {
-                    // The project is NX2Apple (the user's call: what this fork produces is NX2Apple);
-                    // "by nxnative" credits the engine it stands on, which the sketch kept.
+                    // This fork is NX24Apple, based on NX2Apple.
+                    // "by nxnative" credits the engine it stands on.
                     VStack(alignment: .leading, spacing: -2) {
-                        Text("NX2Apple").font(.manrope(27, .bold)).tracking(-0.8)
+                        Text("NX24Apple").font(.manrope(27, .bold)).tracking(-0.8)
                         Text("— by nxnative").font(.manrope(10.5, .medium))
                             .foregroundStyle(LauncherPalette.unbuilt).tracking(0.2)
                     }
@@ -756,7 +756,7 @@ struct LauncherView: View {
     private func newBuild() {
         guard !m.running else { page = .builds; return }
         for index in m.slots.indices { m.slots[index].paths = []; m.slots[index].problem = "" }
-        m.gameDir = ""; m.done = false; m.doneNote = ""; m.macAppPath = ""; m.stages = []
+        m.resetExtractedInputs(); m.gameDir = ""; m.done = false; m.doneNote = ""; m.macAppPath = ""; m.stages = []
         if m.outDir.isEmpty && !library.folder.isEmpty { m.outDir = library.folder }
         page = .builds
     }
@@ -772,7 +772,7 @@ struct LauncherView: View {
         m.gameDir = game.sourceFolder.isEmpty ? (m.basePath as NSString).deletingLastPathComponent : game.sourceFolder
         m.outDir = game.outputDirectory
         m.done = false; m.doneNote = ""; m.stages = []
-        m.target = game.lastTarget
+        m.target = game.lastTarget; m.restoreExtractedInputs(game.inputs["dump"]?.first)
         page = .builds
     }
 

@@ -75,6 +75,149 @@ import XCTest
         return url.path
     }
 
+    private func extracted() throws -> String {
+        let path = temporary.appendingPathComponent("Game")
+        try FileManager.default.createDirectory(at: path.appendingPathComponent("base/exefs"), withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: path.appendingPathComponent("base/romfs"), withIntermediateDirectories: true)
+        var main = Data(repeating: 0, count: 0x100)
+        main.replaceSubrange(0..<4, with: "NSO0".utf8)
+        try main.write(to: path.appendingPathComponent("base/exefs/main"))
+        var d = Data(repeating: 0, count: 0x100)
+        d.replaceSubrange(0..<4, with: "META".utf8); d[0x70] = 0x80; d[0x74] = 0x20
+        d.replaceSubrange(0x80..<0x84, with: "ACI0".utf8)
+        let tid: UInt64 = 0x040074A01BF12000
+        for i in 0..<8 { d[0x90 + i] = UInt8(truncatingIfNeeded: tid >> (8 * i)) }
+        try d.write(to: path.appendingPathComponent("base/exefs/main.npdm"))
+        return path.path
+    }
+
+    func testExtractedBuildCommandPassesTheRootWithoutKeysOrIOSArguments() throws {
+        let store = makeStore()
+        store.selectDump(try extracted())
+        store.outDir = temporary.path + "/Output with spaces"
+        store.cloudFolderCheck = { _ in false }
+        repo.path = temporary.path + "/engine"
+        for name in [RepoLayout.buildScript, RepoLayout.romfsImageTool, "scripts/pack_dump.py", "dm/games/040074A01BF12000/game.tsv"] {
+            let file = URL(fileURLWithPath: repo.path + "/" + name)
+            try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data("scan_dump( '--work-dir'".utf8).write(to: file)
+        }
+        store.startBuild()  // FakeProcessRunner refuses the launch after the command is prepared.
+        let args = store.lastBuildCommand
+        XCTAssertEqual(Array(args.prefix(3)), [deps.pythonPath, repo.path + "/" + RepoLayout.buildScript, store.dumpFolder])
+        XCTAssertFalse(args.contains("-k"))
+        XCTAssertFalse(args.contains("--shell-framework"))
+        XCTAssertFalse(args.contains("--prepare-xcode"))
+        XCTAssertTrue(args.contains("mac-app"))
+        XCTAssertTrue(args.contains("json"))
+        XCTAssertTrue(args.contains(store.outDir + "/040074A01BF12000.app"))
+        XCTAssertEqual(store.effectiveWorkDir, store.outDir + "/040074A01BF12000_build")
+        XCTAssertNil(store.staging)
+    }
+
+    func testUpdateOnlyRomfsPreparesTheOriginalRootAndRequiresCompatibleEngine() throws {
+        let folder = try extracted()
+        let update = URL(fileURLWithPath: folder + "/updates/655360")
+        try FileManager.default.createDirectory(at: update.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try FileManager.default.copyItem(atPath: folder + "/base", toPath: update.path)
+        try FileManager.default.removeItem(atPath: folder + "/base/romfs")
+        let store = makeStore()
+        store.selectDump(update.appendingPathComponent("romfs").path)
+        store.outDir = temporary.path + "/output"
+        store.cloudFolderCheck = { _ in false }
+        XCTAssertTrue(store.canBuild)
+        XCTAssertEqual(store.dumpFolder, folder)
+        XCTAssertEqual(store.dumpLayout?.versions, [655360])
+        repo.path = temporary.path + "/engine"
+        for name in [RepoLayout.buildScript, RepoLayout.romfsImageTool, "scripts/pack_dump.py", "dm/games/040074A01BF12000/game.tsv"] {
+            let file = URL(fileURLWithPath: repo.path + "/" + name)
+            try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data("scan_dump( '--work-dir'".utf8).write(to: file)
+        }
+        store.startBuild()
+        XCTAssertEqual(store.doneNote, store.t("dump.engineOld"))
+        XCTAssertTrue(store.lastBuildCommand.isEmpty)
+        let script = URL(fileURLWithPath: repo.path + "/" + RepoLayout.buildScript)
+        try Data("scan_dump( def dump_versions( '--work-dir'".utf8).write(to: script)
+        store.startBuild()
+        XCTAssertEqual(store.lastBuildCommand.dropFirst(2).first, folder)
+        XCTAssertFalse(store.lastBuildCommand.contains("-k"))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: folder + "/base/romfs"))
+        XCTAssertNil(store.staging)
+    }
+
+    func testAnOldEngineOrMissingProfileStopsWithAnActionableMessage() throws {
+        let store = makeStore()
+        store.selectDump(try extracted())
+        repo.path = temporary.path + "/engine"
+        for name in [RepoLayout.buildScript, RepoLayout.romfsImageTool] {
+            let file = URL(fileURLWithPath: repo.path + "/" + name)
+            try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data("scan_dump(".utf8).write(to: file)
+        }
+        store.startBuild()
+        XCTAssertEqual(store.doneNote, store.t("dump.engineOld"))
+        try Data().write(to: URL(fileURLWithPath: repo.path + "/scripts/pack_dump.py"))
+        store.startBuild()
+        XCTAssertTrue(store.doneNote.contains("040074A01BF12000"))
+        XCTAssertTrue(store.lastBuildCommand.isEmpty)
+        XCTAssertFalse(store.running)
+    }
+
+    func testExtractedSelectionNeedsNoKeysForcesMacAndPreservesPackageChoices() throws {
+        let store = makeStore()
+        store.take(picked: ["/old/Game.nsp"], kind: .base)
+        let folder = try extracted()
+        store.scan(folder: folder)
+        XCTAssertTrue(store.dumpMode)
+        XCTAssertEqual(store.target, BuildTarget.mac)
+        XCTAssertEqual(store.selectedTitleID, "040074A01BF12000")
+        XCTAssertEqual(store.basePath, "/old/Game.nsp")
+        XCTAssertTrue(store.keysPath.isEmpty)
+        XCTAssertTrue(store.canBuild)
+        store.take(dropped: ["/irrelevant/readme.txt"])
+        XCTAssertTrue(store.dumpMode, "an unsupported drop keeps the selected extracted game")
+        store.setDumpMode(false)
+        XCTAssertFalse(store.canBuild, "package mode still needs keys")
+        XCTAssertEqual(store.basePath, "/old/Game.nsp")
+        store.setDumpMode(true)
+        XCTAssertTrue(store.canBuild)
+    }
+
+    func testRemovedInputAndUnsupportedTargetStopBeforeStartingAnyTool() throws {
+        let store = makeStore()
+        store.selectDump(try extracted())
+        store.target = BuildTarget.ios
+        store.startBuild()
+        XCTAssertFalse(store.running)
+        XCTAssertEqual(store.doneNote, store.t("dump.macOnly"))
+        store.target = BuildTarget.mac
+        try FileManager.default.removeItem(atPath: store.dumpFolder + "/base/exefs/main")
+        store.startBuild()
+        XCTAssertFalse(store.running)
+        XCTAssertFalse(store.canBuild)
+        XCTAssertTrue(store.doneNote.contains("main"))
+        XCTAssertEqual(engine.syncs, 0)
+    }
+
+    func testExtractedInputPlanUsesNPDMIdentityAndNeverStagesRomfs() throws {
+        let store = makeStore()
+        let folder = try extracted()
+        store.selectDump(folder + "/base")
+        store.outDir = temporary.path + "/Output with spaces"
+        let plan = try XCTUnwrap(store.inputPlan())
+        XCTAssertEqual(plan.inputDir, folder)
+        XCTAssertEqual(plan.titleID, "040074A01BF12000")
+        XCTAssertEqual(plan.workDir, store.outDir + "/040074A01BF12000_build")
+        XCTAssertNil(store.staging)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: plan.workDir))
+        store.resetExtractedInputs()
+        XCTAssertFalse(store.dumpMode)
+        store.restoreExtractedInputs(folder)
+        XCTAssertEqual(store.dumpFolder, folder)
+        XCTAssertTrue(store.inputsReady)
+    }
+
     // MARK: The conditions to start
 
     func testABuildMayStartOnlyWithARepositoryTheBaseGameTheKeysAndTheToolsAndNoRunningBuild() throws {

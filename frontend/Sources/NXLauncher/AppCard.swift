@@ -72,7 +72,7 @@ package struct AppCard: View {
                     .padTarget("set.returnAfterPlay", scope: "main") { returnAfterPlay.wrappedValue.toggle() }
             }
             CardDivider()
-            CardRow("NX2Apple", detail: String(format: loc.t("app.version"), updates.version),
+            CardRow("NX24Apple", detail: String(format: loc.t("app.version"), updates.version),
                 dot: updates.staged != nil ? LauncherPalette.ready : nil) {
                 if updates.busy { ProgressView().controlSize(.small) }
                 if updates.staged != nil {
